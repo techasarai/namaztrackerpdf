@@ -1,1153 +1,1315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Namaz Tracker - A4 Perfect Print Edition</title>
-  
-  <!-- Premium Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <style>
-    /* =========================================
-       BASE, RESET & HIDE SCROLLBARS
-       ========================================= */
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-       
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #0f172a; 
-      width: 100vw; min-height: 100vh;
-      overflow-x: hidden;
-      -ms-overflow-style: none;  
-      scrollbar-width: none;  
-    }
-    body::-webkit-scrollbar, div::-webkit-scrollbar {
-      display: none; 
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TECH ASAR PROJECT - Premium Glowing Paper Maker</title>
+    <!-- 🌟 Fonts for exact matching -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Serif+Devanagari:wght@400;700&family=Mukta:wght@400;700&family=Hind:wght@400;700&family=Poppins:wght@400;700&family=Baloo+2:wght@400;700&family=Tiro+Devanagari+Hindi&family=Kalam:wght@400;700&family=Martel:wght@400;700&family=Sarala:wght@400;700&family=Laila:wght@400;700&family=Eczar:wght@400;700&family=Yatra+One&family=Rajdhani:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Nunito:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Source+Serif+4:wght@400;700&family=Libre+Baskerville:wght@400;700&family=Raleway:wght@400;700&family=Lora:wght@400;700&family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Inter:wght@400;600;800&family=Shrikhand&display=swap" rel="stylesheet">
 
-    /* =========================================
-       ROCK-SOLID VIEW ENGINE
-       ========================================= */
-    .view-section {
-      position: absolute; top: 0; left: 0; width: 100%; min-height: 100%;
-      transition: opacity 0.3s ease-in-out;
-    }
+    <style>
+        /* 🖤 Full-Screen Theming Variables */
+        :root {
+            --primary: #818cf8; --primary-hover: #6366f1;
+            /* Night Theme (Default) */
+            --bg-main: #0f172a; --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #080f1e 100%);
+            --card-bg: rgba(20, 27, 45, 0.6); --text-main: #f8fafc;
+            --text-muted: #94a3b8; --border-color: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(10, 15, 30, 0.7);
+            --mcq-color: #ef4444; --vshort-color: #f59e0b;
+            --short-color: #10b981; --long-color: #8b5cf6;
+        }
 
-    /* =========================================
-       HOME VIEW (KEYBOARD JUMP & SHIFT LOCKED)
-       ========================================= */
-    #homeView {
-      z-index: 10; background-color: #f0fdf4;
-      display: block; 
-      overflow-y: auto; overflow-x: hidden;
-      width: 100%; min-height: 100vh;
-      opacity: 0; 
-    }
+        /* ☀️ Day Theme Override (Premium Light Effect) */
+        body.day-theme {
+            --bg-main: #f0f4f8; 
+            --bg-gradient: radial-gradient(circle at 50% 0%, #e0e7ff 0%, #f8fafc 100%);
+            --card-bg: rgba(255, 255, 255, 0.95); 
+            --text-main: #0f172a;
+            --text-muted: #64748b; 
+            --border-color: rgba(59, 130, 246, 0.2);
+            --input-bg: #ffffff;
+        }
 
-    /* FIXED PIXEL HEIGHT - Prevents keyboard-induced jumping in AppCreator24 */
-    .app-header-bg {
-      position: absolute; top: 0; left: 0; width: 100%; height: 210px;
-      background: linear-gradient(135deg, #022c22, #047857, #10b981);
-      border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
-      z-index: 1; box-shadow: 0 10px 25px rgba(4, 120, 87, 0.2);
-    }
+        /* 🚀 ANTI-THEFT & JITTER OPTIMIZATIONS (Lag Fixes) */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scrollbar-width: none; -ms-overflow-style: none; user-select: none; -webkit-user-select: none; -moz-user-select: none; }
+        input, textarea { user-select: text; -webkit-user-select: text; -moz-user-select: text; }
+        ::-webkit-scrollbar { width: 0px; background: transparent; display: none; }
 
-    #inputContainer {
-      background: rgba(255, 255, 255, 0.99); padding: 22px 18px; border-radius: 28px; 
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(16, 185, 129, 0.1);
-      width: 90%; max-width: 400px; text-align: center; 
-      position: relative; z-index: 5; margin: 90px auto 40px auto; 
-    }
-
-    /* =========================================
-       PREVIEW VIEW
-       ========================================= */
-    #previewView {
-      z-index: 20; background: #0f172a; 
-      display: none; 
-      opacity: 0;
-      overflow-y: auto; overflow-x: hidden;
-      padding: 85px 10px 140px 10px;
-      min-height: 100vh;
-      -webkit-overflow-scrolling: touch;
-    }
-    
-    /* =========================================
-       ROYAL SPLASH SCREEN
-       ========================================= */
-    #splashScreen {
-      position: fixed; inset: 0; background: #011208; 
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      z-index: 9999; transition: opacity 0.5s ease-out;
-    }
-
-    .splash-glow {
-      position: absolute; width: 350px; height: 350px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(1, 18, 8, 0) 70%);
-      border-radius: 50%; animation: pulseGlow 2.5s ease-in-out infinite alternate;
-    }
-    @keyframes pulseGlow { 0% { transform: scale(0.85); opacity: 0.6; } 100% { transform: scale(1.15); opacity: 1; } }
-    .splash-content { display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; width: 100%; padding: 0 20px; }
-
-    .svg-icon-wrapper { width: 110px; height: 110px; margin-bottom: 18px; display: flex; justify-content: center; align-items: center; }
-    .splash-svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0px 10px 20px rgba(253, 224, 71, 0.2)); }
-    .svg-path { stroke-dasharray: 400; stroke-dashoffset: 400; fill-opacity: 0; animation: drawLine 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards, fillIcon 0.6s ease-out 0.8s forwards; }
-    .ring-spin { transform-origin: 50px 50px; animation: spinRing 12s linear infinite; }
-    @keyframes drawLine { to { stroke-dashoffset: 0; } }
-    @keyframes fillIcon { to { fill-opacity: 1; filter: drop-shadow(0px 6px 12px rgba(253, 224, 71, 0.35)); } }
-    @keyframes spinRing { to { transform: rotate(360deg); } }
-
-    .text-container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; }
-    .splash-title {
-      font-family: 'Outfit', sans-serif; font-size: 1.85em; font-weight: 900; letter-spacing: 3px; margin: 0; padding: 0; text-transform: uppercase;
-      background: linear-gradient(90deg, #FDE047, #ffffff, #FDE047); background-size: 200% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; transform: translateY(12px);
-      filter: drop-shadow(0px 0px 10px rgba(253, 224, 71, 0.4));
-      animation: popUpFade 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards, shineText 3s linear infinite 1s;
-    }
-    .glowing-line {
-      width: 0px; height: 2.5px; background: linear-gradient(90deg, transparent, #34D399, transparent); margin: 8px 0; border-radius: 5px;
-      box-shadow: 0 0 8px rgba(52, 211, 153, 0.8); opacity: 0; animation: expandLine 0.6s ease-out 0.8s forwards;
-    }
-    .splash-subtitle {
-      font-family: 'Poppins', sans-serif; color: #a7f3d0; font-size: 0.75em; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; 
-      opacity: 0; text-shadow: 0 0 6px rgba(52, 211, 153, 0.5); animation: popUpFade 0.6s ease-out 0.9s forwards;
-    }
-    @keyframes shineText { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
-    @keyframes popUpFade { to { opacity: 1; transform: translateY(0); } }
-    @keyframes expandLine { to { width: 120px; opacity: 1; } }
-
-    /* =========================================
-       TOAST NOTIFICATION
-       ========================================= */
-    .custom-toast {
-      position: fixed; top: 20px; left: 50%; transform: translate(-50%, -40px) scale(0.9);
-      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      color: #fff; padding: 10px 20px; border-radius: 40px; font-size: 0.85em; font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); z-index: 10000; display: flex; align-items: center; gap: 8px;
-      width: max-content; max-width: 90vw; opacity: 0; pointer-events: none;
-      transition: transform 0.35s ease, opacity 0.25s ease;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .custom-toast.show { transform: translate(-50%, 0) scale(1); opacity: 1; }
-    .toast-icon { width: 16px; height: 16px; color: #f87171; }
-
-    /* =========================================
-       HOME VIEW UI ELEMENTS
-       ========================================= */
-    .icon-top {
-      width: 44px; height: 44px; background: #ecfdf5; border-radius: 12px; display: flex; justify-content: center; align-items: center;
-      margin: 0 auto 10px auto; color: #047857; box-shadow: 0 6px 12px rgba(4, 120, 87, 0.15);
-      position: relative; animation: floatIcon 3s ease-in-out infinite alternate;
-    }
-    @keyframes floatIcon { 0% { transform: translateY(0px); } 100% { transform: translateY(-3px); } }
-
-    .main-heading { font-family: 'Outfit', sans-serif; color: #0f172a; font-size: 1.6em; font-weight: 800; margin-bottom: 2px; }
-    .sub-heading { font-family: 'Poppins', sans-serif; color: #64748b; font-size: 0.78em; font-weight: 500; margin-bottom: 14px; line-height: 1.3; }
-
-    textarea {
-      width: 100%; height: 115px; padding: 12px; border-radius: 14px; border: 2px solid #e2e8f0; background: #f8fafc;
-      font-family: monospace; font-size: 0.95em; resize: none; outline: none; font-weight: 600; margin-bottom: 14px; color: #0f172a;
-      transition: all 0.25s ease; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-    }
-    textarea:focus { border-color: #10b981; background: #ffffff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.12); }
-
-    .btn-action { 
-        position: relative; overflow: hidden;
-        background: linear-gradient(135deg, #059669, #10b981); color: #fff; 
-        font-family: 'Outfit', sans-serif; padding: 13px 20px; border: none; border-radius: 14px; 
-        width: 100%; cursor: pointer; font-weight: 800; font-size: 1.05em;
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35); 
-        transition: transform 0.1s ease; display: flex; justify-content: center; align-items: center; gap: 8px; letter-spacing: 0.5px;
-    }
-    .btn-action:active { transform: scale(0.96); }
-
-    /* =========================================
-       PREVIEW CONTROLS & PAGES
-       ========================================= */
-    .preview-controls {
-        position: fixed; top: 12px; 
-        left: 50%; transform: translateX(-50%);
-        width: 92%; max-width: 380px; z-index: 1000; display: flex; justify-content: space-between; gap: 10px;
-        background: rgba(30, 41, 59, 0.88); padding: 6px 10px; border-radius: 100px;
-        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .btn-secondary { 
-        font-family: 'Outfit', sans-serif; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.05); 
-        padding: 8px 14px; border-radius: 50px; flex: 1; font-weight: 700; font-size: 0.9em; cursor: pointer;
-        transition: background 0.15s ease;
-    }
-    .btn-secondary:active { background: rgba(255,255,255,0.2); }
-
-    .btn-primary { 
-        font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #10b981, #047857); color: #fff; border: none; 
-        padding: 8px 14px; border-radius: 50px; flex: 1.5; font-weight: 700; font-size: 0.9em; cursor: pointer;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); display: flex; justify-content: center; align-items: center; gap: 6px;
-    }
-    .btn-primary:active { transform: scale(0.96); }
-
-    #printArea { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; margin: 0 auto; }
-    
-    /* =========================================
-       SCREEN PREVIEW: A4 STYLING
-       ========================================= */
-    .page {
-        width: 100%; 
-        max-width: 750px; 
-        aspect-ratio: 1 / 1.4142; /* Strict A4 proportion on screen */
-        padding: 8px; 
-        background: #fff; 
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        border-radius: 6px; 
-        display: flex; flex-direction: column;
-    }
-
-    table { 
-        width: 100%; 
-        height: 100%; 
-        border-collapse: collapse; 
-        table-layout: fixed; 
-        font-family: 'Poppins', sans-serif; 
-        text-transform: uppercase;
-    }
-    
-    th, td { border: 1.2px solid #cbd5e1; text-align: center; font-weight: 700; padding: 0; vertical-align: middle; }
-    
-    /* Slim Header on Screen */
-    th { 
-        background: #047857; color: #fff; 
-        height: 30px; 
-        font-size: clamp(9px, 2vw, 13px); 
-    }
-    
-    td { 
-        font-size: clamp(8px, 1.8vw, 11px); 
-        color: #1e293b; 
-    }
-    
-    .checkbox-mock { 
-        width: clamp(10px, 2.5vw, 14px); 
-        height: clamp(10px, 2.5vw, 14px); 
-        border: 1.5px solid #cbd5e1; border-radius: 3px; 
-        display: inline-flex; align-items: center; justify-content: center; 
-        background: #f8fafc; margin: 0 auto; 
-    }
-    
-    .checkbox-mock.checked { background: #10b981; border-color: #10b981; }
-    .checkbox-mock.completed { background: #059669; border-color: #059669; }
-    tr.completed-row td { background: #ecfdf5 !important; }
-    .day-label { letter-spacing: 0.2px; color: #0f172a; font-weight: 800; }
-
-    /* =========================================
-       STRICT PRINT STYLES (100% FIXED FOR ANDROID)
-       ========================================= */
-    @media print {
-        @page { size: A4 portrait; margin: 0; }
+        /* Smooth UI Transitions (Lag optimized, removed 'will-change') */
+        body { background: var(--bg-main); background-image: var(--bg-gradient); color: var(--text-main); padding: 2vh 2vw; min-height: 100vh; width: 100%; overflow-x: hidden; scroll-behavior: auto; transition: background 0.3s ease, color 0.3s ease; }
         
-        body { background: #fff !important; margin: 0; padding: 0; overflow: visible !important; height: auto !important; width: auto !important; }
+        input, textarea, .custom-select-trigger { transition: border-color 0.15s ease-out; }
+
+        /* 🌟 SPLASH SCREEN ANIMATION */
+        #videoSplash {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, #022615 0%, #01150b 100%); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 999999999; transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .logo-container {
+            position: relative; width: 140px; height: 140px; display: flex;
+            align-items: center; justify-content: center; margin-bottom: 25px;
+            opacity: 0; transform: scale(0.7);
+            animation: smoothScaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s;
+        }
+        .dashed-ring {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px dashed rgba(228, 187, 73, 0.4); animation: slowRotate 15s linear infinite;
+        }
+        .icon-svg { width: 60px; height: 60px; z-index: 2; fill: url(#goldGradient); filter: drop-shadow(0 0 12px rgba(228, 187, 73, 0.4)); }
+        .text-container { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .splash-main-text {
+            font-family: 'Montserrat', sans-serif; font-size: 42px; font-weight: 900; letter-spacing: 5px;
+            background: linear-gradient(120deg, #fceea7 0%, #ffffff 50%, #fceea7 100%);
+            background-size: 200% auto; -webkit-background-clip: text; color: transparent;
+            opacity: 0; transform: translateY(15px);
+            animation: textRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s, lightSweep 2.5s linear infinite 1s;
+        }
+        .separator-line {
+            width: 0px; height: 2px; margin: 4px 0; background: linear-gradient(90deg, transparent 0%, #fdf5c9 50%, transparent 100%);
+            box-shadow: 0 0 10px rgba(228, 187, 73, 0.9), 0 0 20px rgba(211, 226, 160, 0.6);
+            opacity: 0; animation: lineExpand 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.7s;
+        }
+        .sub-text {
+            font-family: 'Inter', sans-serif; font-size: 14px; color: #88af8a; letter-spacing: 7px; font-weight: 800; text-shadow: 0 0 8px rgba(136, 175, 138, 0.3);
+            opacity: 0; transform: translateY(10px); animation: textRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.9s;
+        }
+        @keyframes smoothScaleIn { 0% { opacity: 0; transform: scale(0.6); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes textRise { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes lightSweep { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes lineExpand { 0% { width: 0px; opacity: 0; } 40% { opacity: 1; } 100% { width: 220px; opacity: 1; } }
+        @keyframes slowRotate { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .splash-exit { opacity: 0 !important; pointer-events: none; transform: scale(1.05); }
+
+
+        /* 🚀 STARTUP VERIFICATION SCREEN */
+        #mainLockScreen {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.98); 
+            z-index: 99999998; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.4s ease-out, visibility 0.4s;
+        }
+        .lock-box { background: rgba(20, 27, 45, 0.8); border: 1px solid rgba(56, 189, 248, 0.5); padding: 40px; border-radius: 20px; box-shadow: 0 0 50px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56,189,248,0.1); text-align: center; width: 90%; max-width: 400px;  }
+        .lock-box h2 { color: #38bdf8; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; letter-spacing: 2px; font-weight: 900; }
+        .lock-box p { color: #94a3b8; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        .lock-input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: #fff; font-size: 18px; text-align: center; letter-spacing: 2px; outline: none; transition: 0.2s; margin-bottom: 15px; }
+        .lock-input:focus { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+        .lock-btn { width: 100%; background: linear-gradient(135deg, #38bdf8, #818cf8); color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3); }
+        .lock-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4); }
+        .lock-error { color: #ef4444; font-size: 14px; font-weight: bold; margin-top: 10px; display: none; }
+        .shake-anim { animation: shake 0.3s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+
+        .app-container { width: 100%; max-width: 95vw; margin: 0 auto; background: transparent; padding: 10px; display: flex; flex-direction: column; min-height: 95vh; position: relative; z-index: 10; contain: content; }
         
-        #splashScreen, #homeView, .preview-controls, .custom-toast { display: none !important; }
+        /* 🎨 ORIGINAL BLUE/PURPLE THEME HEADER RESTORED */
+        .app-header-ui { margin-bottom: 25px; margin-top: 5px; animation: fadeInDown 0.4s ease-out; width: 100%;  }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
         
-        #previewView { display: block !important; position: static !important; background: #fff !important; padding: 0 !important; opacity: 1 !important; visibility: visible !important; overflow: visible !important; height: auto !important;}
-        
-        #printArea { display: block !important; gap: 0 !important; }
-        
-        /* EXACT Physical A4 Dimensions (No shrinking!) */
-        .page { 
-            width: 210mm !important; 
-            height: 297mm !important;
-            max-width: none !important; 
-            aspect-ratio: auto !important; 
-            padding: 8mm !important; 
-            margin: 0 !important; 
-            box-shadow: none !important; 
-            border-radius: 0 !important; 
-            page-break-after: always !important; 
-            page-break-inside: avoid !important; 
+        .title-container { 
+            background: rgba(15, 23, 42, 0.8); 
+            border: 1px solid rgba(56, 189, 248, 0.4); 
+            border-radius: 12px; padding: 15px 30px; display: flex; justify-content: center; align-items: center; width: 100%; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.2); 
+            position: relative; overflow: hidden; contain: paint; 
+        }
+        body.day-theme .title-container { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-color: rgba(59, 130, 246, 0.4); 
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15), inset 0 0 20px rgba(59, 130, 246, 0.1); 
+        }
+
+        .tech-asar-title { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: clamp(34px, 4vw, 55px); 
+            font-weight: 900; 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            color: transparent;
+            background: linear-gradient(180deg, #ffffff 0%, #a5b4fc 100%); 
+            -webkit-background-clip: text; background-clip: text;  
+            margin: 0; line-height: 1.2; position: relative; display: inline-block;
+        }
+        /* DAY THEME HEADER TEXT FIX */
+        body.day-theme .tech-asar-title {
+            background: linear-gradient(180deg, #0f172a 0%, #2563eb 100%);
+            -webkit-background-clip: text; color: transparent; 
         }
         
-        table { height: 100% !important; width: 100% !important; border-collapse: collapse !important; }
-        thead { display: table-header-group !important; }
-        tbody { display: table-row-group !important; }
-        tr { page-break-inside: avoid !important; break-inside: avoid !important; }
-        
-        /* Big, Bold & Highly Visible Text in Print */
-        th { 
-            font-size: 14px !important; 
-            height: 35px !important; 
-        } 
-        
-        td { 
-            font-size: 13px !important; 
-            height: auto !important; /* Table automatically perfectly distributes rows */
+        .tech-asar-title::after { 
+            content: "TECH ASAR"; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            color: transparent; 
+            background: linear-gradient(90deg, transparent 0%, #38bdf8 30%, #ffffff 50%, #38bdf8 70%, transparent 100%); 
+            -webkit-background-clip: text; background-clip: text; 
+            background-size: 200% auto; 
+             z-index: 1; 
         }
-        .day-label { font-size: 13.5px !important; }
+        /* DAY THEME TEXT SHINE FIX */
+        body.day-theme .tech-asar-title::after { 
+            background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0) 30%, #3b82f6 50%, rgba(59, 130, 246, 0) 70%, transparent 100%); 
+            -webkit-background-clip: text; 
+        }
+        @keyframes shineSweep { 0% { background-position: -150% center; } 100% { background-position: 150% center; } }
+
+
+        .format-tip-bar { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7; padding: 12px 20px; border-radius: 12px; font-size: clamp(13px, 1.2vw, 16px); font-weight: 500; text-align: center; margin-bottom: 25px; position: relative; overflow: hidden; width: 100%; }
+        .format-tip-bar code { background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 6px; font-family: monospace; font-weight: bold; color: #a7f3d0; }
+        body.day-theme .format-tip-bar { background: #d1fae5; color: #065f46; border-color: #34d399; }
+        body.day-theme .format-tip-bar code { background: rgba(0,0,0,0.1); color: #047857; }
+
+        .top-action-bar { display: flex; gap: 1vw; justify-content: space-between; align-items: stretch; margin-bottom: 35px; flex-wrap: wrap; position: relative; z-index: 50; }
+        .action-btn { flex: 1 1 auto; min-width: 140px; padding: clamp(10px, 1vw, 16px) clamp(12px, 1.5vw, 24px); border-radius: 12px; font-size: clamp(12px, 1vw, 15px); font-weight: 800; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; overflow: hidden; letter-spacing: 0.5px; white-space: nowrap;  transition: transform 0.1s, filter 0.2s; }
+        .action-btn:active { transform: scale(0.97); }
+        .action-btn:hover { filter: brightness(1.15); }
+        .action-btn.import-btn { background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(37, 99, 235, 1)); color: white; border-color: #3b82f6; }
+        .action-btn.saved-btn { background: linear-gradient(135deg, rgba(168, 85, 247, 0.8), rgba(147, 51, 234, 1)); color: white; border-color: #a855f7; }
+        .action-btn.print-btn { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border-color: var(--primary); }
+        .action-btn.word-btn { background: linear-gradient(135deg, rgba(37, 99, 235, 0.85), rgba(29, 78, 216, 1)); color: white; border-color: #2563eb; }
+        .action-btn.two-paper-btn { background: linear-gradient(135deg, rgba(236, 72, 153, 0.8), rgba(219, 39, 119, 1)); color: white; border-color: #ec4899; }
+        .action-btn.clear-btn { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.5); }
+        body.day-theme .action-btn.clear-btn { background: #fee2e2; border-color: #f87171; }
+
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 35px; background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative;  }
+        .meta-grid::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, #38bdf8, #818cf8, #38bdf8, transparent); background-size: 200% 100%;  border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        @keyframes borderLightMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
         
-        .checkbox-mock { width: 16px !important; height: 16px !important; border-width: 1.5px !important; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; position: relative; }
+        label { font-weight: 700; font-size: clamp(12px, 1vw, 14px); color: var(--text-main); letter-spacing: 0.3px;  }
+        body.day-theme label { color: #1e293b; text-shadow: none; }
         
-        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    }
-  
-/* ===== ROBUST JSON UPLOAD UI ===== */
-.upload-zone{
-    width:100%;
-    max-width:420px;
-    min-height:150px;
-    box-sizing:border-box;
-    border:2px dashed rgba(0,255,255,.55);
-    border-radius:18px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:20px 16px;
-    margin:14px auto 10px;
-    cursor:pointer;
-    user-select:none;
-    -webkit-tap-highlight-color:transparent;
-    transition:transform .15s ease, border-color .15s ease, background .15s ease;
-    overflow:hidden;
-}
-.upload-zone:active{transform:scale(.985)}
-.upload-zone.dragover{border-color:#00ffff;background:rgba(0,255,255,.08)}
-.upload-icon{
-    width:48px;height:48px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:28px;font-weight:800;
-    border:1px solid rgba(0,255,255,.6);
-    margin-bottom:9px;
-}
-.upload-title{font-size:16px;font-weight:800;letter-spacing:.7px}
-.upload-subtitle{font-size:12px;opacity:.72;margin-top:6px;line-height:1.45}
-.selected-file{
-    width:100%;box-sizing:border-box;margin-top:11px;
-    font-size:12px;opacity:.9;white-space:nowrap;
-    overflow:hidden;text-overflow:ellipsis;
-}
-#generateBtn{width:100%;max-width:420px}
-@media (max-width:480px){
-    .upload-zone{min-height:140px;border-radius:16px;padding:17px 13px}
-}
+        input, textarea { width: 100%; padding: 15px 20px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-size: 15px; color: var(--text-main); background-color: var(--input-bg); outline: none; }
+        body.day-theme input, body.day-theme textarea { border: 1px solid #cbd5e1; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); color: #0f172a; }
+        input:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.95); }
+        body.day-theme input:focus, body.day-theme textarea:focus { background: #ffffff; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); border-color: #3b82f6;}
 
+        .custom-select-trigger { width: 100%; padding: 15px 20px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-size: 15px; color: var(--text-main); background-color: var(--input-bg); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        body.day-theme .custom-select-trigger { border: 1px solid #cbd5e1; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .custom-select-trigger:hover { border-color: #38bdf8; }
+        body.day-theme .custom-select-trigger:hover { border-color: #3b82f6; }
+        .custom-select-trigger .arrow-icon { color: var(--text-muted); }
 
-/* ===== FINAL JSON-ONLY HOME SCREEN FIX ===== */
-textarea,
-#codeInput,
-#backupCode,
-#restoreCode,
-.code-input,
-.code-textarea {
-    display:none !important;
-}
+        .section-head-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 30px; }
+        .section-head-row .section-title { margin-bottom: 0; }
+        input.section-marks-box { width: 150px !important; max-width: 100%; flex: 0 0 auto; text-align: center; font-weight: 800; padding: 8px 12px !important; border-radius: 10px !important; font-size: 15px !important; }
+        @media print { .section-head-row { display: none !important; } }
+        .section-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: clamp(20px, 2vw, 35px); margin-top: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;  }
+        body.day-theme .section-box { box-shadow: 0 10px 25px rgba(59, 130, 246, 0.08); }
+        .section-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background-size: 200% 100% !important;  }
+        .section-box.mcq-box::before { background: linear-gradient(90deg, #ef4444, #fca5a5, #ef4444); }
+        .section-box.vshort-box::before { background: linear-gradient(90deg, #f59e0b, #fde047, #f59e0b); }
+        .section-box.short-box::before { background: linear-gradient(90deg, #10b981, #6ee7b7, #10b981); }
+        .section-box.long-box::before { background: linear-gradient(90deg, #8b5cf6, #c4b5fd, #8b5cf6); }
 
-#inputContainer textarea {
-    display:none !important;
-}
+        .section-title { font-size: clamp(20px, 2vw, 26px); font-weight: 900; margin-bottom: 30px; letter-spacing: 1px; display: inline-block; position: relative; background-clip: text; -webkit-background-clip: text; color: transparent; }
+        .mcq-box .section-title { background-image: linear-gradient(90deg, #ef4444, #fca5a5); }
+        .vshort-box .section-title { background-image: linear-gradient(90deg, #f59e0b, #fde047); }
+        .short-box .section-title { background-image: linear-gradient(90deg, #10b981, #6ee7b7); }
+        .long-box .section-title { background-image: linear-gradient(90deg, #8b5cf6, #c4b5fd); }
+        
+        .question-block { background: rgba(15, 23, 42, 0.5); padding: 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px; position: relative; overflow: hidden; animation: smoothFadeIn 0.3s ease forwards;  }
+        body.day-theme .question-block { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .question-block::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent); background-size: 200% 100%;  opacity: 0.7; }
+        
+        @keyframes smoothFadeIn { 0% { opacity: 0; transform: translateY(-5px); } 100% { opacity: 1; transform: translateY(0); } }
+        .slide-up-anim { animation: smoothFadeOut 0.2s ease forwards !important; }
+        @keyframes smoothFadeOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.97); } }
+        
+        .q-header-ui { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .q-num-label { font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px;  }
+        body.day-theme .q-num-label { text-shadow: none; }
+        .mcq-box .q-num-label { color: var(--mcq-color); }
+        .vshort-box .q-num-label { color: var(--vshort-color); }
+        .short-box .q-num-label { color: var(--short-color); }
+        .long-box .q-num-label { color: var(--long-color); }
+        .layout-badge { background: #38bdf8; color: #fff; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; margin-left: 10px; display: none; text-shadow:none;}
+        .force-2x2-grid .layout-badge { display: inline-block; }
 
-#inputContainer{
-    width:min(92vw, 460px) !important;
-    max-width:460px !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
-    box-sizing:border-box !important;
-}
+        .remove-btn { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 700; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .remove-btn:hover { background: #ef4444; color: #ffffff; transform: scale(1.03); }
 
-#fileDropZone{
-    display:flex !important;
-    width:100% !important;
-    max-width:420px !important;
-    min-height:155px !important;
-    margin:14px auto 12px !important;
-    box-sizing:border-box !important;
-    align-items:center !important;
-    justify-content:center !important;
-}
+        .options-ui-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; }
+        .option-input-wrapper { position: relative; }
+        .option-prefix { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #94a3b8; font-size: 15px; }
+        .option-input-wrapper input { padding-left: 45px; }
+        
+        .add-btn { background: rgba(255,255,255,0.02); color: var(--text-main); border: 2px dashed rgba(255,255,255,0.2); padding: 16px 20px; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: 700; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; transition: transform 0.2s; }
+        body.day-theme .add-btn { background: #f8fafc; border-color: #cbd5e1; color: #475569; }
+        .add-btn:hover { background: rgba(255,255,255,0.06); color: #38bdf8; border-color: #38bdf8; transform: translateY(-2px); }
 
-#generateBtn{
-    display:block !important;
-    width:100% !important;
-    max-width:420px !important;
-    margin:10px auto 0 !important;
-}
+        /* Modals - Reduced Lag Version */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; opacity: 0; transition: opacity 0.2s;}
+        .modal-overlay.active { opacity: 1; }
+        .modal-content { background: #0f172a; border-radius: 16px; padding: 35px; width: 100%; max-width: 800px; position: relative; border: 1px solid rgba(56, 189, 248, 0.3); max-height: 90vh; overflow-y: auto; transform: scale(0.97); transition: transform 0.2s; color: #f8fafc; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: 20px; right: 25px; background: none; border: none; font-size: 24px; cursor: pointer; color: #94a3b8; font-weight: bold; transition:0.2s;}
+        .modal-close:hover { color: #ef4444; transform: scale(1.1); }
+        .modal-title { font-size: 24px; font-weight: 800; color: #f8fafc; margin-bottom: 15px; }
+        
+        .saved-paper-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: transform 0.2s, border-color 0.2s; }
+        .saved-paper-card:hover { border-color: rgba(56, 189, 248, 0.4); transform: translateX(3px); background: rgba(30, 41, 59, 0.8); }
+        .saved-info h4 { font-size: 18px; color: #38bdf8; margin-bottom: 6px; }
+        .saved-info p { font-size: 13px; color: #94a3b8; }
+        
+        
+        /* Full Screen Select */
+        .fs-select-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.7); z-index: 100000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s ease; }
+        .fs-select-overlay.active { opacity: 1; }
+        .fs-select-content { background: rgba(15, 23, 42, 0.95); width: 90%; max-width: 500px; max-height: 80vh; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; transform: scale(0.97); transition: transform 0.2s; box-shadow: 0 25px 50px rgba(0,0,0,0.8);}
+        .fs-select-overlay.active .fs-select-content { transform: scale(1); }
+        .fs-select-header { padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); }
+        .fs-select-header h3 { font-size: 20px; color: #38bdf8; margin: 0; }
+        .fs-header-actions { display: flex; gap: 10px; align-items: center; }
+        .fs-select-action { background: none; border: none; cursor: pointer; padding: 5px; border-radius: 8px; transition: transform 0.2s; }
+        .fs-select-close { background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; display: flex; align-items: center; padding-left: 5px; transition:0.2s;}
+        .fs-select-close:hover { transform: scale(1.1); color: #ef4444; }
+        .fs-select-list { padding: 15px 10px; overflow-y: auto; flex-grow: 1; scrollbar-width: none;}
+        .fs-select-list::-webkit-scrollbar { display: none; }
+        .fs-option { padding: 14px 20px; margin: 5px 10px; font-size: 16px; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: transform 0.2s ease; display: flex; justify-content: space-between; align-items: center; }
+        .fs-option:hover { background: rgba(255,255,255,0.05); color: #fff; transform: translateX(3px); }
+        .fs-option.selected { background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-weight: bold; }
+        .fs-option.selected::after { content: '✓'; color: #38bdf8; font-size: 20px; font-weight: bold; }
 
-@media (max-width:520px){
-    #inputContainer{
-        width:calc(100vw - 32px) !important;
-        max-width:none !important;
-    }
-    #fileDropZone,#generateBtn{
-        max-width:none !important;
-    }
-}
+        .footer-ui { text-align: center; margin-top: auto; padding-top: 40px; padding-bottom: 10px; width: 100%; display: flex; justify-content: center; }
+        .created-by-badge { width: 100%; display: block; position: relative; z-index: 1; background: linear-gradient(90deg, rgba(14, 165, 233, 0.1), rgba(99, 102, 241, 0.1)); border: 1px solid rgba(14, 165, 233, 0.4); padding: 15px 20px; border-radius: 12px; overflow: hidden;  }
+        .created-by-badge::before { content: ''; position: absolute; top: 0; left: 0; width: 150%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: skewX(-20deg) translateX(-150%);  pointer-events: none; z-index: 0; }
+        @keyframes badgeShine { 0% { transform: skewX(-20deg) translateX(-150%); } 20% { transform: skewX(-20deg) translateX(150%); } 100% { transform: skewX(-20deg) translateX(150%); } }
+        .created-by-text { font-family: 'Montserrat', 'Inter', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(90deg, #38bdf8, #818cf8, #a78bfa, #38bdf8); background-size: 200% auto; -webkit-background-clip: text; color: transparent; display: inline-block; position: relative; z-index: 2;  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4)); }
 
-@media print{
-    #homeView,#fileDropZone,#jsonFile,#generateBtn{
-        display:none !important;
-    }
-}
+        #paperPreview { display: none; }
 
+        /* 🖨️ PREMIUM PRINT STYLES */
+        @media print {
+            body { background: white !important; padding: 0 !important; color: #000 !important; }
+            .app-container > *:not(#paperPreview) { display: none !important; }
+            .app-header-ui, .editor-ui, .add-btn, .print-btn, .word-btn, .remove-btn, .section-box, .section-title, .top-action-bar, .modal-overlay, .format-tip-bar, .footer-ui, .fs-select-overlay, #mainLockScreen, #videoSplash { display: none !important; }
+            /* 🚫 Hide Toast in PDF */
+            .toast-msg { display: none !important; }
+            
+            #paperPreview { display: block !important; color: #000 !important; width: 100%; }
+            .single-paper-content { width: 100%; }
+            .print-header { text-align: center; margin-bottom: 8px; border-bottom: 2px solid #000; padding-bottom: 5px; }
+            .print-school { font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
+            .print-exam { font-weight: bold; margin-bottom: 5px; }
+            .print-meta-table { width: 100%; border-collapse: collapse; font-weight: bold; table-layout: fixed; }
+            .print-meta-table td { padding: 2px 0; }
+            .print-section-heading { display: block !important; text-align: center; font-weight: bold; margin: 10px 0 6px 0; text-decoration: underline; text-transform: uppercase; page-break-after: avoid; }
+            .print-q-item { width: 100%; margin-bottom: 5px; page-break-inside: avoid; }
+            .print-q-table { width: 100%; border-collapse: collapse; }
+            .print-q-text { vertical-align: top; text-align: left; padding-right: 12px; word-wrap: break-word; }
+            .print-q-marks { vertical-align: top; text-align: right; font-weight: bold; width: 40px; white-space: nowrap; }
+            
+            .print-options-container { width: 100%; margin-top: 4px; padding-left: 25px; box-sizing: border-box; }
+            .print-opt-col { vertical-align: top; word-wrap: break-word; word-break: break-word; min-width: 0; }
 
-/* ===== FINAL WORKING JSON UPLOADER ===== */
-#jsonFile{display:none !important}
-
-#fileDropZone.upload-zone{
-  display:flex !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  width:100% !important;
-  max-width:420px !important;
-  min-height:145px !important;
-  box-sizing:border-box !important;
-  margin:14px auto 12px !important;
-  padding:20px 14px !important;
-  border:2px dashed rgba(4,120,87,.45) !important;
-  border-radius:18px !important;
-  background:rgba(16,185,129,.055) !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:center !important;
-  cursor:pointer !important;
-  user-select:none !important;
-  -webkit-user-select:none !important;
-  -webkit-tap-highlight-color:transparent !important;
-}
-
-#fileDropZone.upload-zone.dragover{
-  background:rgba(16,185,129,.14) !important;
-  border-color:#059669 !important;
-  transform:scale(.99);
-}
-
-#fileDropZone .upload-icon{
-  display:flex !important;
-  width:46px !important;
-  height:46px !important;
-  align-items:center !important;
-  justify-content:center !important;
-  border-radius:50% !important;
-  margin-bottom:8px !important;
-  font-size:27px !important;
-  font-weight:800 !important;
-  background:#ecfdf5 !important;
-  border:1px solid rgba(5,150,105,.25) !important;
-  color:#047857 !important;
-}
-
-#fileDropZone .upload-title{
-  display:block !important;
-  font-size:15px !important;
-  font-weight:800 !important;
-  letter-spacing:.6px !important;
-  color:#0f172a !important;
-}
-
-#fileDropZone .upload-subtitle{
-  display:block !important;
-  font-size:11px !important;
-  line-height:1.4 !important;
-  margin-top:5px !important;
-  color:#64748b !important;
-}
-
-#fileDropZone .selected-file{
-  display:block !important;
-  width:100% !important;
-  box-sizing:border-box !important;
-  margin-top:9px !important;
-  font-size:11px !important;
-  color:#047857 !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-  text-overflow:ellipsis !important;
-}
-
-#generateBtn{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  gap:8px !important;
-  width:100% !important;
-  max-width:420px !important;
-  margin:10px auto 0 !important;
-}
-
-#generateBtn:disabled{
-  opacity:.48 !important;
-  cursor:not-allowed !important;
-}
-
-#inputContainer{
-  width:calc(100% - 32px) !important;
-  max-width:460px !important;
-  box-sizing:border-box !important;
-}
-
-@media(max-width:480px){
-  #inputContainer{
-    width:calc(100% - 24px) !important;
-    padding:20px 14px !important;
-    border-radius:24px !important;
-  }
-  #fileDropZone.upload-zone{
-    min-height:138px !important;
-  }
-}
-
-@media print{
-  #homeView,#fileDropZone,#jsonFile,#generateBtn,.preview-controls{
-    display:none !important;
-  }
-  #previewView{
-    display:block !important;
-    opacity:1 !important;
-    padding:0 !important;
-    background:#fff !important;
-  }
-  #printArea{gap:0 !important}
-  .page{
-    box-shadow:none !important;
-    border-radius:0 !important;
-    max-width:none !important;
-    width:210mm !important;
-    height:297mm !important;
-    aspect-ratio:auto !important;
-    page-break-after:always !important;
-    break-after:page !important;
-  }
-  .page:last-child{
-    page-break-after:auto !important;
-    break-after:auto !important;
-  }
-  thead{display:table-header-group !important}
-  tbody{display:table-row-group !important}
-  tr{page-break-inside:avoid !important;break-inside:avoid !important}
-}
-
-
-/* ===== CHECKED-DAYS-ONLY PREVIEW ===== */
-.month-heading{
-  display:none !important;
-}
-
-.namaz-table .date-cell{
-  white-space:nowrap !important;
-  font-weight:700 !important;
-  letter-spacing:.2px !important;
-  font-variant-numeric:tabular-nums !important;
-}
-
-.namaz-table{
-  margin-top:0 !important;
-}
-
-@media screen and (max-width:520px){
-  .namaz-table .date-cell{
-    font-size:11px !important;
-    padding-left:7px !important;
-    padding-right:7px !important;
-  }
-}
-
-@media print{
-  .month-heading{
-    display:none !important;
-  }
-  .namaz-table{
-    margin-top:0 !important;
-  }
-}
-
-
-/* ===== FINAL MONTH + DATE OVERLAP FIX ===== */
-.namaz-table{
-  width:100% !important;
-  max-width:100% !important;
-  table-layout:fixed !important;
-  border-collapse:collapse !important;
-  margin:0 !important;
-}
-
-.namaz-table .date-column{
-  width:30% !important;
-}
-
-.namaz-table .namaz-column{
-  width:14% !important;
-}
-
-.namaz-table th,
-.namaz-table td{
-  box-sizing:border-box !important;
-  overflow:hidden !important;
-  text-overflow:clip !important;
-  white-space:nowrap !important;
-  vertical-align:middle !important;
-  text-align:center !important;
-}
-
-.namaz-table th{
-  font-size:9px !important;
-  line-height:1.05 !important;
-  padding:0 2px !important;
-}
-
-.namaz-table td{
-  font-size:10px !important;
-  line-height:1 !important;
-  padding:0 2px !important;
-}
-
-.namaz-table .date-cell{
-  width:30% !important;
-  min-width:30% !important;
-  font-size:10px !important;
-  font-weight:800 !important;
-  letter-spacing:0 !important;
-  font-variant-numeric:tabular-nums !important;
-  white-space:nowrap !important;
-  overflow:hidden !important;
-}
-
-.namaz-table .namaz-cell{
-  width:14% !important;
-}
-
-.namaz-table .checkbox-mock{
-  flex:0 0 auto !important;
-  margin:0 auto !important;
-}
-
-@media screen and (max-width:520px){
-  .namaz-table .date-column{width:31% !important}
-  .namaz-table .namaz-column{width:13.8% !important}
-  .namaz-table .date-cell{
-    font-size:8.5px !important;
-    padding:0 1px !important;
-  }
-  .namaz-table th{
-    font-size:7.5px !important;
-    padding:0 1px !important;
-  }
-  .namaz-table td{
-    font-size:8px !important;
-    padding:0 1px !important;
-  }
-}
-
-@media print{
-  .namaz-table{
-    width:100% !important;
-    table-layout:fixed !important;
-  }
-  .namaz-table .date-column{width:30% !important}
-  .namaz-table .namaz-column{width:14% !important}
-  .namaz-table .date-cell{
-    font-size:10px !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-  }
-  .namaz-table th{
-    font-size:9px !important;
-  }
-  .namaz-table td{
-    font-size:10px !important;
-  }
-}
-
+            .two-paper-wrapper { display: flex; width: 100%; height: 100vh; position: relative; box-sizing: border-box; justify-content: space-between; }
+            .paper-half { width: 47%; box-sizing: border-box; }
+            .left-half { padding-right: 0.25in; }
+            .right-half { padding-left: 0.25in; }
+            .paper-divider { position: absolute; left: 50%; top: 0; bottom: 0; width: 0; border-left: 1px dashed #000; transform: translateX(-50%); }
+            .two-paper-layout .print-header { margin-bottom: 5px; padding-bottom: 4px; }
+            .two-paper-layout .print-school { margin-bottom: 1px; }
+            .two-paper-layout .print-exam { margin-bottom: 3px; }
+            .two-paper-layout .print-meta-table td { padding: 1px 0; }
+            .two-paper-layout .print-section-heading { margin: 6px 0 4px 0; }
+            .two-paper-layout .print-q-item { margin-bottom: 4px; }
+            .two-paper-layout .print-options-container { margin-top: 2px; }
+        }
+    </style>
+<style>
+.question-block { content-visibility: auto; contain-intrinsic-size: auto 280px; }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;"> <!-- Added Right-Click Block Here -->
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toastNotification" class="custom-toast">
-    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
-    </svg>
-    <span id="toastMessage">Error Message</span>
-  </div>
-
-  <!-- ROYAL SPLASH SCREEN -->
-  <div id="splashScreen">
-    <div class="splash-glow"></div>
-    <div class="splash-content">
-      <div class="svg-icon-wrapper">
-        <svg class="splash-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FDE047" /><stop offset="100%" stop-color="#D97706" />
-            </linearGradient>
-            <linearGradient id="emeraldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#34D399" /><stop offset="100%" stop-color="#047857" />
-            </linearGradient>
-          </defs>
-          <circle cx="50" cy="50" r="45" stroke="url(#goldGradient)" stroke-width="0.8" stroke-dasharray="3 5" fill="none" class="ring-spin"/>
-          <path class="svg-path" d="M 50,15 A 35,35 0 1,0 85,50 A 30,30 0 1,1 50,15 Z" stroke="url(#goldGradient)" stroke-width="1.5" fill="url(#goldGradient)" stroke-linejoin="round"/>
-          <path class="svg-path" d="M 38 68 C 38 52, 44 48, 50 40 C 56 48, 62 52, 62 68 Z" stroke="url(#emeraldGradient)" stroke-width="1.5" fill="url(#emeraldGradient)" stroke-linejoin="round"/>
-          <path class="svg-path" d="M 36 68 L 64 68 Z" stroke="url(#emeraldGradient)" stroke-width="2.5" stroke-linecap="round"/>
-          <line class="svg-path" x1="50" y1="40" x2="50" y2="25" stroke="url(#emeraldGradient)" stroke-width="2" stroke-linecap="round"/>
-          <path class="svg-path" d="M 50 30 L 51 32.5 L 53.5 32.5 L 51.5 34 L 52.5 36.5 L 50 35 L 47.5 36.5 L 48.5 34 L 46.5 32.5 L 49 32.5 Z" fill="url(#goldGradient)" stroke="none" style="animation-delay: 0.5s; opacity: 0;"/>
-        </svg>
-      </div>
-      <div class="text-container">
-        <h1 class="splash-title">NAMAZ TRACKER</h1>
-        <div class="glowing-line"></div>
-        <p class="splash-subtitle">PDF GENERATOR</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- HOME VIEW -->
-  <div id="homeView" class="view-section">
-      <div class="app-header-bg"></div>
-
-      <div id="inputContainer">
-        <div class="icon-top">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-            <polyline points="10 9 9 9 8 9"></polyline>
-          </svg>
-        </div>
-
-        <h1 class="main-heading">JSON → PDF</h1>
-        <p class="sub-heading">Upload your Namaz Tracker .json backup to create your A4 tracker PDF.</p>
-
-        <input id="jsonFile" type="file" accept=".json,application/json,text/json" hidden>
-
-        <div id="fileDropZone" class="upload-zone" role="button" tabindex="0"
-             aria-label="Upload Namaz Tracker JSON file">
-          <div class="upload-icon">↑</div>
-          <div class="upload-title">UPLOAD JSON FILE</div>
-          <div class="upload-subtitle">Tap here to select your Namaz Tracker backup.json file</div>
-          <div id="selectedFileName" class="selected-file">No file selected</div>
-        </div>
-
-        <button id="generateBtn" class="btn-action" type="button" disabled>
-          GENERATE PDF
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
-      </div>
-  </div>
-
-  <!-- PREVIEW VIEW -->
-  <div id="previewView" class="view-section">
-    <div class="preview-controls">
-        <button class="btn-secondary" onclick="closePreview()">Cancel</button>
-        <button class="btn-primary" onclick="handlePrint()">
-            Print File
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                <rect x="6" y="14" width="12" height="8"></rect>
+    <!-- 🌟 Splash Screen (Exactly 3 Seconds) -->
+    <div id="videoSplash">
+        <div class="logo-container">
+            <div class="dashed-ring"></div>
+            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <defs><linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fdf5c9" /><stop offset="50%" stop-color="#d4af37" /><stop offset="100%" stop-color="#8a6e1c" /></linearGradient></defs>
+                <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/><path d="M8 12h8v2H8zm0 4h5v2H8z"/>
             </svg>
-        </button>
+        </div>
+        <div class="text-container">
+            <h1 class="splash-main-text">TECH ASAR</h1>
+            <div class="separator-line"></div>
+            <h2 class="sub-text">PAPER MAKER</h2>
+        </div>
     </div>
-    
-    <div id="printArea"></div>
-  </div>
 
-  <script>
-(function () {
-  "use strict";
+    <!-- Startup Lock Screen -->
+    <div id="mainLockScreen">
+        <div class="lock-box">
+            <h2>Tech Asar Project</h2>
+            <p>सिस्टम तक पहुंचने के लिए सुरक्षा कोड दर्ज करें (Enter Security Code)</p>
+            <input type="password" id="startupVerifyCode" class="lock-input" placeholder="••••••••" autocomplete="new-password">
+            <button class="lock-btn" onclick="verifyStartupCode()">VERIFY & UNLOCK</button>
+            <div id="startupErrorMsg" class="lock-error">❌ गलत कोड (Invalid Code)</div>
+        </div>
+    </div>
 
-  let selectedJsonFile = null;
-  let toastTimer = null;
+    <!-- Main App Content -->
+    <div class="app-container" id="mainAppContent" style="visibility: hidden; opacity: 0;">
+        
+        <!-- 🎨 ORIGINAL BLUE/PURPLE THEME HEADER RESTORED -->
+        <div class="app-header-ui">
+            <div class="title-container">
+                <h2 class="tech-asar-title">TECH ASAR</h2>
+            </div>
+        </div>
 
-  const $ = (id) => document.getElementById(id);
+        <div class="format-tip-bar editor-ui">
+            💡 <strong>स्मार्ट टिप:</strong> Bold: <code>Ctrl+B</code> | Underline: <code>Ctrl+U</code> | Subscript (नीचे): <code>Ctrl+=</code> | Superscript (ऊपर): <code>Ctrl+Shift+=</code>
+        </div>
 
-  function showToast(message) {
-    const toast = $("toastNotification");
-    const msg = $("toastMessage");
-    if (!toast || !msg) return;
-    msg.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
-  }
+        <!-- 🚀 SEPARATED SAVE AND PRINT BUTTONS -->
+        <div class="top-action-bar editor-ui">
+            <button class="action-btn import-btn" onclick="openImportModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                AI Magic Import
+            </button>
+            <button class="action-btn saved-btn" onclick="openSavedPapersModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                Saved Vault <span id="savedCountBadge" style="background:rgba(0,0,0,0.5); padding:2px 8px; border-radius:10px; font-size:12px; margin-left:5px;">0</span>
+            </button>
+            <button class="action-btn print-btn" onclick="generateAndPrintPaper()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                Export PDF
+            </button>
+            <button class="action-btn word-btn" onclick="downloadPaperAsWord()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
+                Word (.docx)
+            </button>
+            <button class="action-btn two-paper-btn" onclick="generateAndPrintTwoPaper()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20" stroke-dasharray="4 4"></line></svg>
+                2x Print
+            </button>
+            <button class="action-btn word-btn" onclick="downloadPaperAsWord(true)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><polyline points="8 13 10 18 12 14 14 18 16 13"></polyline></svg>
+                2x Word (.docx)
+            </button>
+            <button class="action-btn clear-btn" onclick="clearPaper()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Clear
+            </button>
+        </div>
+        
+        <div class="editor-ui">
+            <!-- 🌟 METADATA GRID -->
+            <div class="meta-grid">
+                
+                <div class="form-group">
+                    <label>School Name</label>
+                    <select id="schoolName">
+                        <option value="विनायक इण्टर कॉलेज">विनायक इण्टर कॉलेज</option>
+                        <option value="खजुआ इण्टर कॉलेज">खजुआ इण्टर कॉलेज</option>
+                        <option value="एम० एस० चिल्ड्रन एकेडमी">एम० एस० चिल्ड्रन एकेडमी</option>
+                        <option value="विनायक इंग्लिश एकेडमी">विनायक इंग्लिश एकेडमी</option>
+                        <option value="TECH ASAR PROJECT">TECH ASAR PROJECT</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Subject</label>
+                    <select id="subjectName" onchange="updateOptionPrefixes()">
+                        <option value="हिन्दी">हिन्दी</option><option value="English">English</option><option value="गणित">गणित</option>
+                        <option value="विज्ञान">विज्ञान</option><option value="सामाजिक विज्ञान">सामाजिक विज्ञान</option>
+                        <option value="संस्कृत">संस्कृत</option><option value="कंप्यूटर">कंप्यूटर</option>
+                        <option value="चित्रकला">चित्रकला</option><option value="पर्यावरण अध्ययन">पर्यावरण अध्ययन</option>
+                        <option value="सामान्य ज्ञान">सामान्य ज्ञान</option><option value="भौतिक विज्ञान">भौतिक विज्ञान</option>
+                        <option value="रसायन विज्ञान">रसायन विज्ञान</option><option value="जीव विज्ञान">जीव विज्ञान</option>
+                        <option value="इतिहास">इतिहास</option><option value="नागरिक शास्त्र">नागरिक शास्त्र</option>
+                        <option value="अर्थशास्त्र">अर्थशास्त्र</option><option value="वाणिज्य">वाणिज्य</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Exam Type</label>
+                    <select id="examName">
+                        <option value="अर्ध वार्षिक परीक्षा">अर्ध वार्षिक परीक्षा</option>
+                        <option value="वार्षिक परीक्षा">वार्षिक परीक्षा</option>
+                        <option value="प्री-बोर्ड परीक्षा">प्री-बोर्ड परीक्षा</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Class</label>
+                    <select id="className">
+                        <option value="NC">NC (Nursery)</option><option value="KG">KG</option><option value="LKG">LKG</option><option value="UKG">UKG</option>
+                        <option value="कक्षा 1">कक्षा 1</option><option value="कक्षा 2">कक्षा 2</option><option value="कक्षा 3">कक्षा 3</option>
+                        <option value="कक्षा 4">कक्षा 4</option><option value="कक्षा 5">कक्षा 5</option><option value="कक्षा 6">कक्षा 6</option>
+                        <option value="कक्षा 7">कक्षा 7</option><option value="कक्षा 8">कक्षा 8</option><option value="कक्षा 9">कक्षा 9</option>
+                        <option value="कक्षा 10" selected>कक्षा 10</option><option value="कक्षा 11">कक्षा 11</option><option value="कक्षा 12">कक्षा 12</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Time Allowed</label>
+                    <select id="timeAllowed">
+                        <option value="3 घंटे 15 मिनट">3 घंटे 15 मिनट</option>
+                        <option value="3 घंटे">3 घंटे</option>
+                        <option value="2 घंटे 30 मिनट">2 घंटे 30 मिनट</option>
+                        <option value="2 घंटे">2 घंटे</option>
+                        <option value="1 घंटे 30 मिनट">1 घंटे 30 मिनट</option>
+                        <option value="1 घंटे">1 घंटे</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
 
-  function openPicker() {
-    const input = $("jsonFile");
-    if (input) input.click();
-  }
+                <div class="form-group">
+                    <label>Max Marks</label>
+                    <select id="maxMarks">
+                        <option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option>
+                        <option value="50">50</option><option value="60">60</option><option value="70" selected>70</option>
+                        <option value="80">80</option><option value="90">90</option><option value="100">100</option>
+                        <option value="none">कोई नहीं (None)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Font Style</label>
+                    <select id="paperFont" onchange="updatePaperFormatting()">
+<option value="'Inter', sans-serif">डिफ़ॉल्ट (Inter)</option>
+<optgroup label="🇮🇳 हिंदी + English (दोनों के लिए बढ़िया)"><option value="'Noto Sans Devanagari', sans-serif" style="font-family:'Noto Sans Devanagari', sans-serif">Noto Sans Devanagari — साफ़ आधुनिक</option><option value="'Noto Serif Devanagari', serif" style="font-family:'Noto Serif Devanagari', serif">Noto Serif Devanagari — किताबी</option><option value="'Mukta', sans-serif" style="font-family:'Mukta', sans-serif">Mukta — सुंदर पढ़ने लायक</option><option value="'Hind', sans-serif" style="font-family:'Hind', sans-serif">Hind — सरल</option><option value="'Poppins', sans-serif" style="font-family:'Poppins', sans-serif">Poppins — मॉडर्न</option><option value="'Baloo 2', sans-serif" style="font-family:'Baloo 2', sans-serif">Baloo 2 — गोल मुलायम</option><option value="'Tiro Devanagari Hindi', serif" style="font-family:'Tiro Devanagari Hindi', serif">Tiro Devanagari — क्लासिक</option><option value="'Kalam', cursive" style="font-family:'Kalam', cursive">Kalam — हाथ की लिखावट</option><option value="'Martel', serif" style="font-family:'Martel', serif">Martel — मोटा किताबी</option><option value="'Sarala', sans-serif" style="font-family:'Sarala', sans-serif">Sarala — हल्का</option><option value="'Laila', serif" style="font-family:'Laila', serif">Laila — सजावटी</option><option value="'Eczar', serif" style="font-family:'Eczar', serif">Eczar — भारी शीर्षक</option><option value="'Yatra One', cursive" style="font-family:'Yatra One', cursive">Yatra One — शीर्षक स्टाइल</option><option value="'Rajdhani', sans-serif" style="font-family:'Rajdhani', sans-serif">Rajdhani — टेक स्टाइल</option></optgroup>
+<optgroup label="🔤 English"><option value="'Roboto', sans-serif" style="font-family:'Roboto', sans-serif">Roboto</option><option value="'Open Sans', sans-serif" style="font-family:'Open Sans', sans-serif">Open Sans</option><option value="'Lato', sans-serif" style="font-family:'Lato', sans-serif">Lato</option><option value="'Nunito', sans-serif" style="font-family:'Nunito', sans-serif">Nunito</option><option value="'Raleway', sans-serif" style="font-family:'Raleway', sans-serif">Raleway</option><option value="'Montserrat', sans-serif" style="font-family:'Montserrat', sans-serif">Montserrat</option><option value="'Merriweather', serif" style="font-family:'Merriweather', serif">Merriweather</option><option value="'Playfair Display', serif" style="font-family:'Playfair Display', serif">Playfair Display</option><option value="'Source Serif 4', serif" style="font-family:'Source Serif 4', serif">Source Serif 4</option><option value="'Libre Baskerville', serif" style="font-family:'Libre Baskerville', serif">Libre Baskerville</option><option value="'Lora', serif" style="font-family:'Lora', serif">Lora</option><option value="'PT Serif', serif" style="font-family:'PT Serif', serif">PT Serif</option></optgroup>
+<optgroup label="💻 Windows / Word फ़ॉन्ट"><option value="Cambria, serif" style="font-family:Cambria, serif">Cambria</option><option value="Calibri, sans-serif" style="font-family:Calibri, sans-serif">Calibri</option><option value="'Nirmala UI', sans-serif" style="font-family:'Nirmala UI', sans-serif">Nirmala UI</option><option value="Mangal, serif" style="font-family:Mangal, serif">Mangal</option><option value="Kokila, serif" style="font-family:Kokila, serif">Kokila</option><option value="Aparajita, serif" style="font-family:Aparajita, serif">Aparajita</option><option value="Utsaah, serif" style="font-family:Utsaah, serif">Utsaah</option><option value="Arial, sans-serif" style="font-family:Arial, sans-serif">Arial</option><option value="Verdana, sans-serif" style="font-family:Verdana, sans-serif">Verdana</option><option value="Tahoma, sans-serif" style="font-family:Tahoma, sans-serif">Tahoma</option><option value="'Times New Roman', serif" style="font-family:'Times New Roman', serif">Times New Roman</option><option value="Georgia, serif" style="font-family:Georgia, serif">Georgia</option></optgroup>
+</select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Line Spacing</label>
+                    <select id="lineSpacing" onchange="updatePaperFormatting()">
+                        <option value="1.0">1.0</option><option value="1.15">1.15</option><option value="1.5" selected>1.5</option>
+                        <option value="2.0">2.0</option><option value="2.5">2.5</option><option value="3.0">3.0</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Font Size</label>
+                    <select id="fontSize" onchange="updatePaperFormatting()">
+                        <option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14" selected>14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Global MCQ Layout</label>
+                    <select id="mcqLayoutOption" onchange="updatePaperFormatting()">
+                        <option value="1x4">1x4 (एक पंक्ति में 4)</option>
+                        <option value="2x2">2x2 (दो पंक्तियों में 2)</option>
+                        <option value="1x1">1x1 (एक-एक लाइन में)</option>
+                    </select>
+                </div>
 
-  function validJsonFile(file) {
-    if (!file) return false;
-    const name = String(file.name || "").toLowerCase();
-    const type = String(file.type || "").toLowerCase();
-    return name.endsWith(".json") ||
-           type === "application/json" ||
-           type === "text/json" ||
-           type === "";
-  }
+                <div class="form-group">
+                    <label>Page Margin (गैप)</label>
+                    <select id="pageMargin" onchange="updatePaperFormatting()">
+                        <option value="0.25in">Narrow (0.25 in)</option>
+                        <option value="0.5in" selected>Normal (0.5 in)</option>
+                        <option value="0.75in">Moderate (0.75 in)</option>
+                        <option value="1.0in">Wide (1.0 in)</option>
+                    </select>
+                </div>
 
-  function fiveNamaz(value) {
-    if (Array.isArray(value)) {
-      return Array.from({ length: 5 }, (_, i) =>
-        value[i] === true || value[i] === 1 || value[i] === "true"
-      );
-    }
+                <!-- 🌓 DAY/NIGHT THEME BUTTON -->
+                <div class="form-group">
+                    <label>App Theme (थीम)</label>
+                    <select id="appTheme" onchange="toggleTheme()">
+                        <option value="night" selected>Night Theme 🌙</option>
+                        <option value="day">Day Theme ☀️</option>
+                    </select>
+                </div>
 
-    // Compatibility for numeric bit-mask values.
-    if (typeof value === "number" && Number.isFinite(value)) {
-      return [0, 1, 2, 3, 4].map(i => (value & (1 << i)) !== 0);
-    }
+                <!-- 🅱️ ALL TEXT BOLD OPTION -->
+                <div class="form-group">
+                    <label>Bold Text (सारा टेक्स्ट बोल्ड)</label>
+                    <select id="boldAll" onchange="updatePaperFormatting(); debouncedAutoSave();">
+                        <option value="normal" selected>Normal (सामान्य)</option>
+                        <option value="bold">Bold (सारा बोल्ड) 𝐁</option>
+                    </select>
+                </div>
 
-    return [false, false, false, false, false];
-  }
+                <!-- 🔢 MARKS STYLE OPTION -->
+                <div class="form-group">
+                    <label>Marks Style (अंक दिखाने का तरीका)</label>
+                    <select id="marksStyle">
+                        <option value="each" selected>हर प्रश्न के आगे [1]</option>
+                        <option value="section">Section में 1×20=20</option>
+                        <option value="none">None (कोई अंक नहीं)</option>
+                    </select>
+                </div>
+            </div>
 
-  function getState(payload) {
-    if (!payload || typeof payload !== "object") return null;
+            <div id="structuredEditorBox">
+                <!-- MCQ SECTION -->
+                <div class="section-box mcq-box">
+                    <div class="section-head-row"><div class="section-title">बहुविकल्पीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_mcq" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div>
+                    <div id="mcqContainer"></div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <!-- 1x1 MCQ Button Removed, Single Unified Add Button Left -->
+                        <button type="button" class="add-btn" onclick="addMCQField('')" style="flex:1;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> नया बहुविकल्पीय प्रश्न
+                        </button>
+                    </div>
+                </div>
 
-    if (payload.namazState && typeof payload.namazState === "object") {
-      return payload.namazState;
-    }
+                <div class="section-box vshort-box"><div class="section-head-row"><div class="section-title">अति लघु उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_vshort" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="vshortContainer"></div><button type="button" class="add-btn" onclick="addNormalField('vshortContainer', 'अति लघु उत्तरीय', '2')">नया अति लघु उत्तरीय प्रश्न जोड़ें</button></div>
+                <div class="section-box short-box"><div class="section-head-row"><div class="section-title">लघु उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_short" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="shortContainer"></div><button type="button" class="add-btn" onclick="addNormalField('shortContainer', 'लघु उत्तरीय', '4')">नया लघु उत्तरीय प्रश्न जोड़ें</button></div>
+                <div class="section-box long-box"><div class="section-head-row"><div class="section-title">दीर्घ उत्तरीय प्रश्न</div><input type="text" class="section-marks-box" id="secMarks_long" placeholder="1×20=20" title="अंक (जैसे 1×20=20) — Marks Style में Section चुनने पर हेडिंग के आगे छपेगा" autocomplete="off"></div><div id="longContainer"></div><button type="button" class="add-btn" onclick="addNormalField('longContainer', 'दीर्घ उत्तरीय', '7')">नया दीर्घ उत्तरीय प्रश्न जोड़ें</button></div>
+            </div>
+        </div>
+        
+        <div class="footer-ui">
+            <div class="created-by-badge"><span class="created-by-text">Created By Asar</span></div>
+        </div>
+        
+        <div id="paperPreview"></div>
+    </div>
 
-    // Also accept a direct date-keyed JSON object.
-    const dateKeys = Object.keys(payload).filter(k =>
-      /^\d{4}-\d{1,2}-\d{1,2}$/.test(k)
-    );
-    return dateKeys.length ? payload : null;
-  }
+    <!-- AI MAGIC IMPORT MODAL (CLEANED UP TEXT) -->
+    <div id="importModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeImportModal()">✕</button>
+            <div class="modal-title" style="text-align: center;">✨ AI HTML से स्मार्ट पेपर इम्पोर्ट करें</div>
+            <p style="text-align: center; color: #94a3b8; margin-bottom: 25px; font-size: 15px;">अपना AI जनरेटेड HTML कोड नीचे पेस्ट करें।</p>
+            <textarea id="htmlImportText" rows="6" placeholder="AI से मिला HTML कोड यहाँ पेस्ट करें..."></textarea>
+            <button class="action-btn import-btn" style="width: 100%; justify-content: center; font-size: 16px; margin-top: 15px;" onclick="saveAndLoadImportedHTML()">💾 पेपर सेव करें और एडिटर में खोलें</button>
+        </div>
+    </div>
 
-  function makeMonths(state) {
-    const months = new Map();
+    <!-- SAVED PAPERS MODAL -->
+    <div id="savedPapersModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSavedPapersModal()">✕</button>
+            <div class="modal-title">🗂️ सेव्ड पेपर्स (Saved Bank)</div>
+            <div id="savedPapersListContainer" style="margin-top: 20px;"></div>
+        </div>
+    </div>
 
-    Object.keys(state).forEach(key => {
-      const match = key.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-      if (!match) return;
+    <!-- CUSTOM DELETE MODAL -->
+    <div id="customDeleteModal" class="modal-overlay" style="z-index: 120000;">
+        <div class="modal-content" style="max-width: 400px; padding: 30px; text-align: center;">
+            <div style="color: #ef4444; margin-bottom: 15px;"><svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></div>
+            <h3 class="modal-title" style="font-size: 22px; color: #ef4444;">विकल्प डिलीट करें</h3>
+            <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 20px; line-height: 1.5;">क्या आप वाकई इसे डिलीट करना चाहते हैं?<br>सिस्टम सुरक्षा के लिए अपना पासवर्ड दर्ज करें:</p>
+            <input type="password" id="deletePromptVerify" placeholder="••••••••" style="text-align: center; letter-spacing: 2px; margin-bottom: 10px;">
+            <small id="deleteVerifyError" style="color: #ef4444; display: none; margin-bottom: 15px; font-weight:bold;">❌ गलत पासवर्ड!</small>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button class="action-btn clear-btn" onclick="closeCustomDeletePrompt()" style="padding: 10px 20px; flex: 1;">Cancel</button>
+                <button class="action-btn" style="background: #ef4444; color: white; border: none; padding: 10px 20px; flex: 1;" onclick="submitCustomDeletePrompt()">Delete</button>
+            </div>
+        </div>
+    </div>
 
-      const year = Number(match[1]);
-      const month = Number(match[2]); // Namaz Tracker export uses 0 = January
-      const day = Number(match[3]);
+    <!-- CUSTOM PROMPT MODAL (Edit/Add Options) -->
+    <div id="customPromptModal" class="modal-overlay" style="z-index: 110000;">
+        <div class="modal-content" style="max-width: 450px; padding: 30px;">
+            <h3 id="customPromptTitle" class="modal-title" style="font-size: 22px;">विकल्प बदलें</h3>
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label id="customPromptLabel">नया मान (New Value):</label>
+                <input type="text" id="customPromptInput" placeholder="यहाँ टाइप करें...">
+            </div>
+            <div class="form-group" id="verificationGroup" style="margin-bottom: 25px; display: none;">
+                <label style="color: #ef4444;">सुरक्षा कोड (Verification Code):</label>
+                <input type="password" id="customPromptVerify" placeholder="कोड दर्ज करें..." style="border-color: rgba(239, 68, 68, 0.4);">
+                <small id="verifyError" style="color: #ef4444; display: none; margin-top: 5px; font-weight:bold;">❌ गलत सुरक्षा कोड!</small>
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button class="action-btn clear-btn" onclick="closeCustomPrompt()" style="padding: 10px 20px;">Cancel</button>
+                <button class="action-btn print-btn" onclick="submitCustomPrompt()" style="padding: 10px 25px;">OK</button>
+            </div>
+        </div>
+    </div>
 
-      if (!Number.isInteger(year) ||
-          !Number.isInteger(month) || month < 0 || month > 11 ||
-          !Number.isInteger(day) || day < 1) return;
+    <!-- FULL SCREEN SELECT -->
+    <div id="fullScreenSelectModal" class="fs-select-overlay">
+        <div class="fs-select-content">
+            <div class="fs-select-header">
+                <h3 id="fsSelectTitle">Options</h3>
+                <div class="fs-header-actions">
+                    <button id="fsEditBtn" class="fs-select-action" style="display:none;" title="Edit Selected">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                    <button id="fsDelBtn" class="fs-select-action" style="display:none;" title="Delete Selected">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                    <button class="fs-select-close" onclick="closeFullScreenSelect()">✕</button>
+                </div>
+            </div>
+            <div class="fs-select-list" id="fsSelectList"></div>
+        </div>
+    </div>
 
-      const maxDay = new Date(year, month + 1, 0).getDate();
-      if (day > maxDay) return;
+    <script>
+        // --- 0. NEW SVG-BASED CENTERED TOAST NOTIFICATION ---
+        function showToast(msg, type = 'success') {
+            const notification = document.createElement('div'); 
+            notification.className = 'toast-msg'; 
+            
+            let svgIcon = ''; let bgCol = '';
+            if(type === 'success') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`; bgCol = '#10b981'; } 
+            else if (type === 'error') { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`; bgCol = '#ef4444'; } 
+            else { svgIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`; bgCol = '#f59e0b'; }
 
-      const monthKey = year + "-" + String(month).padStart(2, "0");
+            notification.innerHTML = `<div style="display:flex; align-items:center; gap:12px;">${svgIcon}<span style="font-size:16px;">${msg}</span></div>`;
+            notification.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background:${bgCol}; color:white; padding:15px 30px; border-radius:12px; font-weight:bold; z-index:999999; animation: toastFadeInCenter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), toastFadeOutCenter 0.3s ease 2.7s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);`;
+            
+            const style = document.createElement('style');
+            style.innerHTML = `@keyframes toastFadeInCenter { from { opacity: 0; transform: translate(-50%, -20px); } to { opacity: 1; transform: translate(-50%, 0); } } @keyframes toastFadeOutCenter { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -20px); } }`;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification); 
+            setTimeout(() => { notification.remove(); style.remove(); }, 3000);
+        }
 
-      if (!months.has(monthKey)) {
-        months.set(monthKey, {
-          year,
-          month,
-          days: new Map()
+        /* 🌓 Theme Logic */
+        function toggleTheme() {
+            const theme = document.getElementById('appTheme').value;
+            if(theme === 'day') document.body.classList.add('day-theme');
+            else document.body.classList.remove('day-theme');
+            debouncedAutoSave();
+        }
+
+        /* 💾 Auto-Save & Manual Vault Save Logic */
+        let mcqCount = 0; let activeSelectElement = null; let activeTriggerUpdateFn = null; let customPromptCallback = null; let requiresVerification = false;
+
+
+        let currentPaperId = null; 
+
+        function autoSave() {
+            const data = {
+                meta: {
+                    school: document.getElementById('schoolName').value, subject: document.getElementById('subjectName').value,
+                    exam: document.getElementById('examName').value, cls: document.getElementById('className').value,
+                    time: document.getElementById('timeAllowed').value, marks: document.getElementById('maxMarks').value,
+                    font: document.getElementById('paperFont').value, space: document.getElementById('lineSpacing').value,
+                    fsize: document.getElementById('fontSize').value, mcqlayout: document.getElementById('mcqLayoutOption').value,
+                    margin: document.getElementById('pageMargin').value, theme: document.getElementById('appTheme').value, bold: document.getElementById('boldAll').value, marksstyle: document.getElementById('marksStyle').value,
+                },
+                mcqs: Array.from(document.querySelectorAll('.mcq-item-block')).map(b => ({
+                    q: b.querySelector('.mcq-text').value, a: b.querySelector('.mcq-op-a').value, b: b.querySelector('.mcq-op-b').value,
+                    c: b.querySelector('.mcq-op-c').value, d: b.querySelector('.mcq-op-d').value, m: b.querySelector('.mcq-marks').value,
+                    layout: b.getAttribute('data-layout') || ''
+                })),
+                vshorts: Array.from(document.querySelectorAll('#vshortContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
+                shorts: Array.from(document.querySelectorAll('#shortContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
+                longs: Array.from(document.querySelectorAll('#longContainer .normal-item-block')).map(b => ({ q: b.querySelector('.normal-text').value, m: b.querySelector('.normal-marks').value })),
+                currentPaperId: currentPaperId 
+            };
+            const selectStates = {}; document.querySelectorAll('.meta-grid select').forEach(sel => { selectStates[sel.id] = sel.innerHTML; }); data.selectStates = selectStates;
+            data.secBoxes = {}; document.querySelectorAll('.section-marks-box').forEach(b => { data.secBoxes[b.id] = { v: b.value, m: b.dataset.manual || '' }; });
+            localStorage.setItem('techAsarDraft', JSON.stringify(data));
+            const hasContent = [...data.mcqs, ...data.vshorts, ...data.shorts, ...data.longs].some(x => (x.q || '').trim());
+            if (hasContent) saveCurrentPaperToVault(true);
+        }
+
+        let autoSaveTimeout;
+        function debouncedAutoSave() { clearTimeout(autoSaveTimeout); autoSaveTimeout = setTimeout(autoSave, 1200); }
+        document.addEventListener('input', (e) => { if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') debouncedAutoSave(); });
+        document.addEventListener('change', (e) => { if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') debouncedAutoSave(); });
+
+        function loadAutoSave() {
+            const saved = localStorage.getItem('techAsarDraft');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if(data.currentPaperId) currentPaperId = data.currentPaperId; 
+                    if(data.selectStates) { document.querySelectorAll('.meta-grid select').forEach(sel => { if(data.selectStates[sel.id]) sel.innerHTML = data.selectStates[sel.id]; }); }
+                    if (data.meta) {
+                        ['schoolName','subjectName','examName','className','timeAllowed','maxMarks','paperFont','lineSpacing','fontSize','mcqLayoutOption','pageMargin','appTheme'].forEach(id => {
+                            if(data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')]) document.getElementById(id).value = data.meta[id.replace('Name','').replace('Allowed','').replace('Option','').replace('appTheme','theme')];
+                        });
+                        if (data.meta.bold) document.getElementById('boldAll').value = data.meta.bold;
+                        if (data.meta.marksstyle) document.getElementById('marksStyle').value = data.meta.marksstyle;
+                        toggleTheme(); updatePaperFormatting();
+                    }
+                    document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0;
+                    if(data.mcqs) data.mcqs.forEach(q => createMCQElement(q.q, q.a, q.b, q.c, q.d, q.m, q.layout));
+                    if(data.vshorts) data.vshorts.forEach(q => createNormalElement('vshortContainer', 'अति लघु उत्तरीय', q.q, q.m));
+                    if(data.shorts) data.shorts.forEach(q => createNormalElement('shortContainer', 'लघु उत्तरीय', q.q, q.m));
+                    if(data.longs) data.longs.forEach(q => createNormalElement('longContainer', 'दीर्घ उत्तरीय', q.q, q.m));
+                    if(data.secBoxes) Object.keys(data.secBoxes).forEach(id => { const b = document.getElementById(id); if (b && data.secBoxes[id].m === '1') { b.value = data.secBoxes[id].v; b.dataset.manual = '1'; } });
+                    refreshSectionBoxes();
+                    return true;
+                } catch(e) { console.error("Load error", e); }
+            } return false;
+        }
+
+        /* 🗂️ Auto Save to Vault (Prevents Duplicates) */
+        function saveCurrentPaperToVault(silent) {
+            if(!currentPaperId) currentPaperId = 'paper_' + Date.now();
+            
+            let paperData = { id: currentPaperId, title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (Auto Save)`, date: new Date().toLocaleDateString('hi-IN'), mcqs: [], vshorts: [], shorts: [], longs: [] };
+            
+            document.querySelectorAll('.mcq-item-block').forEach(b => { paperData.mcqs.push([ b.querySelector('.mcq-text').value, b.querySelector('.mcq-op-a').value, b.querySelector('.mcq-op-b').value, b.querySelector('.mcq-op-c').value, b.querySelector('.mcq-op-d').value, b.querySelector('.mcq-marks').value, b.getAttribute('data-layout') || '' ]); });
+            document.querySelectorAll('#vshortContainer .normal-item-block').forEach(b => { paperData.vshorts.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
+            document.querySelectorAll('#shortContainer .normal-item-block').forEach(b => { paperData.shorts.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
+            document.querySelectorAll('#longContainer .normal-item-block').forEach(b => { paperData.longs.push([ b.querySelector('.normal-text').value, b.querySelector('.normal-marks').value ]); });
+            
+            let allPapers = localStorage.getItem('mySavedAIPapers'); allPapers = allPapers ? JSON.parse(allPapers) : []; 
+            
+            const existingIndex = allPapers.findIndex(p => p.id === currentPaperId);
+            if(existingIndex !== -1) { allPapers[existingIndex] = paperData; } 
+            else { allPapers.unshift(paperData); }
+            
+            localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
+            updateSavedCountBadge();
+            if (!silent) showToast("✅ पेपर Saved Vault में सेव/अपडेट हो गया है!", "success");
+        }
+
+        /* CUSTOM DELETE & TEXT PROMPT */
+        let deleteActionCallback = null;
+        function showCustomDeletePrompt(callback) { deleteActionCallback = callback; document.getElementById('deletePromptVerify').value = ''; document.getElementById('deleteVerifyError').style.display = 'none'; const modal = document.getElementById('customDeleteModal'); modal.style.display = 'flex'; setTimeout(() => { modal.classList.add('active'); document.getElementById('deletePromptVerify').focus(); }, 10); }
+        function closeCustomDeletePrompt() { const modal = document.getElementById('customDeleteModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; deleteActionCallback = null; }, 300); }
+        function submitCustomDeletePrompt() { const pwd = document.getElementById('deletePromptVerify').value.trim(); if (pwd === '8442') { if (deleteActionCallback) deleteActionCallback(); closeCustomDeletePrompt(); } else { document.getElementById('deleteVerifyError').style.display = 'block'; document.getElementById('deletePromptVerify').focus(); } }
+        document.getElementById('deletePromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomDeletePrompt(); });
+
+        function showCustomPrompt(title, label, defaultValue, requireVerify, callback) {
+            document.getElementById('customPromptTitle').innerText = title; document.getElementById('customPromptLabel').innerText = label;
+            const inputEl = document.getElementById('customPromptInput'); inputEl.value = defaultValue;
+            requiresVerification = requireVerify; const verifyGroup = document.getElementById('verificationGroup'); const verifyInput = document.getElementById('customPromptVerify'); const errorMsg = document.getElementById('verifyError');
+            verifyInput.value = ''; errorMsg.style.display = 'none'; if (requireVerify) { verifyGroup.style.display = 'flex'; } else { verifyGroup.style.display = 'none'; }
+            customPromptCallback = callback; const modal = document.getElementById('customPromptModal'); modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); inputEl.focus(); }, 10);
+        }
+        function closeCustomPrompt() { const modal = document.getElementById('customPromptModal'); modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; customPromptCallback = null; }, 300); }
+        function submitCustomPrompt() {
+            const val = document.getElementById('customPromptInput').value.trim(); if (!val) return showToast("⚠️ कृपया कोई मान दर्ज करें!", "warning");
+            if (requiresVerification) { const code = document.getElementById('customPromptVerify').value.trim(); if (code !== '8442') { document.getElementById('verifyError').style.display = 'block'; document.getElementById('customPromptVerify').focus(); return; } }
+            if (customPromptCallback) { customPromptCallback(val); } closeCustomPrompt();
+        }
+        document.getElementById('customPromptInput').addEventListener('keypress', function(e){ if(e.key === 'Enter') { if(requiresVerification) document.getElementById('customPromptVerify').focus(); else submitCustomPrompt(); } });
+        document.getElementById('customPromptVerify').addEventListener('keypress', function(e){ if(e.key === 'Enter') submitCustomPrompt(); });
+
+        /* 🎨 Custom Dropdowns */
+        function setupFullScreenSelects() {
+            document.querySelectorAll('.custom-select-trigger').forEach(el => el.remove());
+            document.querySelectorAll('select').forEach(select => {
+                select.style.display = 'none'; 
+                const trigger = document.createElement('div'); trigger.className = 'custom-select-trigger';
+                const labelElement = select.previousElementSibling; const modalTitle = labelElement ? labelElement.innerText : 'Select Option';
+                const updateTriggerText = () => { trigger.innerHTML = `<span>${select.options[select.selectedIndex]?.text || 'Select...'}</span> <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>`; };
+                updateTriggerText();
+                trigger.addEventListener('click', () => { openFullScreenSelect(select, modalTitle, updateTriggerText); });
+                select.parentNode.insertBefore(trigger, select.nextSibling);
+            });
+            document.getElementById('fullScreenSelectModal').addEventListener('click', function(e) { if(e.target === this) closeFullScreenSelect(); });
+        }
+
+        function openFullScreenSelect(selectEl, title, updateCallback) {
+            activeSelectElement = selectEl; activeTriggerUpdateFn = updateCallback;
+            document.getElementById('fsSelectTitle').innerText = title; const listContainer = document.getElementById('fsSelectList'); listContainer.innerHTML = ''; 
+            Array.from(selectEl.options).forEach((option, index) => {
+                const optDiv = document.createElement('div'); optDiv.className = 'fs-option'; if (option.selected) optDiv.classList.add('selected'); optDiv.innerText = option.text;
+                optDiv.addEventListener('click', () => { selectEl.selectedIndex = index; selectEl.dispatchEvent(new Event('change')); activeTriggerUpdateFn(); closeFullScreenSelect(); debouncedAutoSave(); });
+                listContainer.appendChild(optDiv);
+            });
+            
+            const addBtnDiv = document.createElement('div'); addBtnDiv.className = 'fs-option';
+            addBtnDiv.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:10px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> नया विकल्प जोड़ें (Add New)`;
+            addBtnDiv.style.color = '#34d399'; addBtnDiv.style.fontWeight = 'bold'; addBtnDiv.style.borderTop = '1px dashed rgba(255,255,255,0.1)'; addBtnDiv.style.marginTop = '10px'; addBtnDiv.style.justifyContent = 'center';
+            addBtnDiv.addEventListener('click', () => {
+                showCustomPrompt("नया विकल्प जोड़ें", `नया "${title}":`, "", false, (newVal) => {
+                    const newOpt = document.createElement('option'); newOpt.value = newVal; newOpt.text = newVal; newOpt.setAttribute('data-custom', 'true');
+                    selectEl.appendChild(newOpt); selectEl.value = newVal; selectEl.dispatchEvent(new Event('change')); activeTriggerUpdateFn(); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave();
+                });
+            }); listContainer.appendChild(addBtnDiv);
+            
+            const editBtn = document.getElementById('fsEditBtn'); const delBtn = document.getElementById('fsDelBtn'); const selectedOpt = selectEl.options[selectEl.selectedIndex];
+            if (selectedOpt.value !== 'none') { editBtn.style.display = 'flex'; delBtn.style.display = 'flex'; } else { editBtn.style.display = 'none'; delBtn.style.display = 'none'; }
+            editBtn.onclick = () => { showCustomPrompt("विकल्प बदलें", "नया मान (New Value):", selectedOpt.text, true, (newVal) => { selectedOpt.text = newVal; selectedOpt.value = newVal; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
+            delBtn.onclick = () => { showCustomDeletePrompt(() => { selectEl.remove(selectEl.selectedIndex); if(selectEl.options.length === 0) { let emptyOpt = document.createElement('option'); emptyOpt.value = 'none'; emptyOpt.text = 'कोई नहीं (None)'; selectEl.appendChild(emptyOpt); } selectEl.selectedIndex = 0; activeTriggerUpdateFn(); selectEl.dispatchEvent(new Event('change')); openFullScreenSelect(selectEl, title, activeTriggerUpdateFn); debouncedAutoSave(); }); };
+            const overlay = document.getElementById('fullScreenSelectModal'); overlay.style.display = 'flex'; setTimeout(() => { overlay.classList.add('active'); }, 10);
+        }
+        function closeFullScreenSelect() { const overlay = document.getElementById('fullScreenSelectModal'); overlay.classList.remove('active'); setTimeout(() => { overlay.style.display = 'none'; }, 200); }
+
+        function setPrintPageSize(landscape) {
+            let marginValue = document.getElementById('pageMargin')?.value || '0.5in'; 
+            let pageStyleTag = document.getElementById('dynamicPageStyle');
+            if(!pageStyleTag) { pageStyleTag = document.createElement('style'); pageStyleTag.id = 'dynamicPageStyle'; document.head.appendChild(pageStyleTag); }
+            pageStyleTag.innerHTML = landscape ? `@media print { @page { size: A4 landscape; margin: ${marginValue}; } }` : `@media print { @page { size: A4 portrait; margin: ${marginValue}; } }`;
+        }
+
+        function updatePaperFormatting() {
+            try { const ff = document.getElementById('paperFont').value; if (document.fonts) { document.fonts.load('400 16px ' + ff, 'अआइ Abc'); document.fonts.load('700 16px ' + ff, 'अआइ Abc'); } } catch (e) {}
+            const spacing = document.getElementById('lineSpacing').value, font = document.getElementById('paperFont').value, fontSize = document.getElementById('fontSize').value, mcqLayout = document.getElementById('mcqLayoutOption').value; 
+            let styleTag = document.getElementById('dynamicPrintStyle'); if(!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'dynamicPrintStyle'; document.head.appendChild(styleTag); }
+            
+            let mcqGridConfig = 'repeat(4, minmax(0, 1fr))'; let optColWidth = 'auto';
+            if (mcqLayout === '2x2') { mcqGridConfig = 'repeat(2, minmax(0, 1fr))'; } else if (mcqLayout === '1x1') { mcqGridConfig = '1fr'; optColWidth = '100%'; }
+            
+            const boldAllOn = document.getElementById('boldAll') && document.getElementById('boldAll').value === 'bold';
+            styleTag.innerHTML = `@media print { ${boldAllOn ? '#paperPreview, #paperPreview * { font-weight: 700 !important; }' : ''} #paperPreview, #paperPreview * { font-family: ${font} !important; } .print-q-text, .print-opt-col, .print-meta-table td, .print-q-marks { line-height: ${spacing} !important; font-size: ${fontSize}px !important; } .print-options-container { display: grid !important; grid-template-columns: ${mcqGridConfig} !important; gap: 8px 15px !important; width: 100% !important; } .print-opt-col { width: ${optColWidth} !important; min-width: 0 !important; word-wrap: break-word !important; white-space: normal !important; } .print-section-heading { font-size: ${parseFloat(fontSize) + 1}px !important; } .print-school { font-size: ${parseFloat(fontSize) + 10}px !important; } .print-exam { font-size: ${parseFloat(fontSize) + 1}px !important; } .two-paper-layout .print-school { font-size: ${parseFloat(fontSize) + 4}px !important; } .two-paper-layout .print-exam { font-size: ${parseFloat(fontSize) - 1}px !important; } .two-paper-layout .print-section-heading { font-size: ${parseFloat(fontSize) - 2}px !important; } .two-paper-layout .print-q-text, .two-paper-layout .print-q-marks, .two-paper-layout .print-meta-table td { font-size: ${parseFloat(fontSize) - 3}px !important; } .two-paper-layout .print-opt-col { font-size: ${parseFloat(fontSize) - 3.5}px !important; } }`;
+        }
+
+        /* ⌨️ Keyboard Shortcuts (Ctrl+B, Ctrl+U, Ctrl+2, Ctrl+=, Ctrl+Shift+=) */
+        // -- 🚀 ANTI-THEFT SCRIPT ADDED HERE --
+        document.addEventListener('keydown', function(e) {
+            
+            // 🛡️ ANTI-THEFT: Block developer tools and saving
+            const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+            
+            // Block F12
+            if(e.keyCode == 123) { e.preventDefault(); return false; }
+            // Block Ctrl+Shift+I (DevTools)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 73) { e.preventDefault(); return false; }
+            // Block Ctrl+Shift+J (DevTools Console)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 74) { e.preventDefault(); return false; }
+            // Block Ctrl+S (Save Page)
+            if(e.ctrlKey && e.keyCode == 83) { e.preventDefault(); return false; }
+            // Block Ctrl+C (Copy Text) unless inside an input/textarea
+            if(e.ctrlKey && e.keyCode == 67 && !isInput) { e.preventDefault(); return false; }
+            // Block Ctrl+U (View Source) unless inside an input/textarea
+            if(e.ctrlKey && e.keyCode == 85 && !isInput) { e.preventDefault(); return false; }
+            // ------------------------------------
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) { e.preventDefault(); generateAndPrintPaper(); return; }
+            if ((e.ctrlKey || e.metaKey) && e.key === '2') {
+                const activeEl = document.activeElement; const mcqBlock = activeEl.closest('.mcq-item-block');
+                if (mcqBlock) {
+                    e.preventDefault(); let currentLayout = mcqBlock.getAttribute('data-layout');
+                    if (currentLayout === '2x2') { mcqBlock.removeAttribute('data-layout'); mcqBlock.classList.remove('force-2x2-grid'); showToast("ℹ️ यह प्रश्न अब ग्लोबल लेआउट का उपयोग करेगा।", "success"); } 
+                    else { mcqBlock.setAttribute('data-layout', '2x2'); mcqBlock.classList.add('force-2x2-grid'); showToast("✅ यह प्रश्न अब प्रिंट में 2x2 ग्रिड में दिखेगा!", "success"); }
+                    debouncedAutoSave();
+                }
+            }
+
+            const activeEl = document.activeElement;
+            if (activeEl && (activeEl.tagName === 'TEXTAREA' || (activeEl.tagName === 'INPUT' && activeEl.type === 'text'))) {
+                // Bold and Underline
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B' || e.key === 'u' || e.key === 'U')) {
+                    e.preventDefault(); 
+                    const start = activeEl.selectionStart, end = activeEl.selectionEnd, selectedText = activeEl.value.substring(start, end);
+                    if (selectedText.length > 0) {
+                        let tagOpen = e.key.toLowerCase() === 'b' ? '<b>' : '<u>', tagClose = e.key.toLowerCase() === 'b' ? '</b>' : '</u>';
+                        activeEl.value = activeEl.value.substring(0, start) + tagOpen + selectedText + tagClose + activeEl.value.substring(end);
+                        activeEl.selectionStart = start; activeEl.selectionEnd = start + selectedText.length + 7; debouncedAutoSave();
+                    } else { showToast("⚠️ कृपया पहले जिस शब्द को बदलना है, उसे सेलेक्ट करें!", 'warning'); }
+                }
+
+                // Subscript (Ctrl + =) and Superscript (Ctrl + Shift + =)
+                if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
+                    e.preventDefault();
+                    const isSup = e.shiftKey || e.key === '+';
+                    const start = activeEl.selectionStart, end = activeEl.selectionEnd, selectedText = activeEl.value.substring(start, end);
+                    if (selectedText.length > 0) {
+                        let tagOpen = isSup ? '<sup>' : '<sub>', tagClose = isSup ? '</sup>' : '</sub>';
+                        activeEl.value = activeEl.value.substring(0, start) + tagOpen + selectedText + tagClose + activeEl.value.substring(end);
+                        activeEl.selectionStart = start; activeEl.selectionEnd = start + selectedText.length + tagOpen.length + tagClose.length; debouncedAutoSave();
+                    } else { showToast("⚠️ कृपया पहले जिस नंबर/शब्द को ऊपर/नीचे करना है, उसे सेलेक्ट करें!", 'warning'); }
+                }
+            }
         });
-      }
 
-      months.get(monthKey).days.set(day, fiveNamaz(state[key]));
-    });
+        function getPrefixes(text) {
+            const subj = document.getElementById('subjectName').value.toLowerCase();
+            let isEnglish = subj.includes('english') || subj.includes('अंग्रेज़ी') || subj.includes('अंग्रेजी');
+            /* सब्जेक्ट English न हो, फिर भी अगर प्रश्न/ऑप्शन अंग्रेज़ी (बिना हिंदी) में हैं तो A,B,C,D */
+            if (!isEnglish && text && /[A-Za-z]/.test(text) && !/[\u0900-\u097F]/.test(text)) isEnglish = true;
+            return isEnglish ? { a: '(A)', b: '(B)', c: '(C)', d: '(D)' } : { a: '(अ)', b: '(ब)', c: '(स)', d: '(द)' };
+        }
 
-    return Array.from(months.values()).sort(
-      (a, b) => a.year - b.year || a.month - b.month
-    );
-  }
+        function updateBlockPrefixes(block, noSave) {
+            const val = sel => { const e = block.querySelector(sel); return e ? e.value : ''; };
+            const text = [val('.mcq-text'), val('.mcq-op-a'), val('.mcq-op-b'), val('.mcq-op-c'), val('.mcq-op-d')].join(' ');
+            const prefixes = getPrefixes(text);
+            ['a','b','c','d'].forEach(k => { const e = block.querySelector('.pref-' + k); if (e && e.innerText !== prefixes[k]) e.innerText = prefixes[k]; });
+            if (!noSave) debouncedAutoSave();
+        }
 
-  function checkMarkup(checked) {
-    return checked
-      ? '<span class="checkbox-mock checked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>'
-      : '<span class="checkbox-mock"></span>';
-  }
+        function updateOptionPrefixes() {
+            document.querySelectorAll('.mcq-item-block').forEach(block => updateBlockPrefixes(block, true));
+            debouncedAutoSave();
+        }
 
-  function renderPDF(state, profileName) {
-    const printArea = $("printArea");
-    if (!printArea) throw new Error("PDF preview area not found.");
-
-    const months = makeMonths(state);
-    if (!months.length) {
-      throw new Error("No valid Namaz records found in this JSON file.");
-    }
-
-    printArea.innerHTML = "";
-    let includedMonths = 0;
-
-    months.forEach(info => {
-      // A month is included when at least ONE day has at least one checked box.
-      const monthHasAnyTick = Array.from(info.days.values())
-        .some(values => values.some(Boolean));
-
-      if (!monthHasAnyTick) return;
-
-      includedMonths++;
-
-      const page = document.createElement("div");
-      page.className = "page";
-
-      const table = document.createElement("table");
-      table.className = "namaz-table";
-      table.innerHTML = `
-        <colgroup>
-          <col class="date-column">
-          <col class="namaz-column">
-          <col class="namaz-column">
-          <col class="namaz-column">
-          <col class="namaz-column">
-          <col class="namaz-column">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>DATE</th>
-            <th>फज्र</th>
-            <th>जुहर</th>
-            <th>असर</th>
-            <th>मगरिब</th>
-            <th>ईशा</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      `;
-
-      const tbody = table.querySelector("tbody");
-      const daysInMonth = new Date(info.year, info.month + 1, 0).getDate();
-
-      // COMPLETE month data: every day of an included month is shown.
-      for (let day = 1; day <= daysInMonth; day++) {
-        const values = info.days.get(day) || [false, false, false, false, false];
-
-        const row = document.createElement("tr");
-        if (values.every(Boolean)) row.classList.add("completed-row");
-
-        const dateCell = document.createElement("td");
-        const date = new Date(info.year, info.month, day);
-        const dayText = String(day).padStart(2, "0");
-        const monthText = date.toLocaleDateString("en-US", {
-          month: "short"
-        }).toUpperCase();
-
-        // Exact requested format: 01 AUG 2025
-        dateCell.textContent = `${dayText} ${monthText} ${info.year}`;
-        dateCell.className = "date-cell";
-        row.appendChild(dateCell);
-
-        values.forEach(checked => {
-          const cell = document.createElement("td");
-          cell.className = "namaz-cell";
-          cell.innerHTML = checkMarkup(checked);
-          row.appendChild(cell);
+        document.addEventListener('input', (e) => {
+            const blk = e.target.closest ? e.target.closest('.mcq-item-block') : null;
+            if (blk) updateBlockPrefixes(blk);
         });
 
-        tbody.appendChild(row);
-      }
+        /* 🔢 Section heading के आगे वाले बॉक्स: अपने-आप भरते हैं (1×20=20), चाहो तो खुद बदल सकते हो */
+        function refreshSectionBoxes() {
+            const subj = (document.getElementById('subjectName').value || '').toLowerCase();
+            const eng = subj.includes('english') || subj.includes('अंग्रेज़ी') || subj.includes('अंग्रेजी');
+            const fmtN = n => String(Math.round(n * 100) / 100);
+            [['secMarks_mcq', '.mcq-item-block', '.mcq-marks'], ['secMarks_vshort', '#vshortContainer .normal-item-block', '.normal-marks'],
+             ['secMarks_short', '#shortContainer .normal-item-block', '.normal-marks'], ['secMarks_long', '#longContainer .normal-item-block', '.normal-marks']].forEach(([id, sel, mk]) => {
+                const box = document.getElementById(id); if (!box || box.dataset.manual === '1') return;
+                const arr = Array.from(document.querySelectorAll(sel)).map(b => { const e = b.querySelector(mk); return parseFloat((e ? e.value : '').trim()); });
+                let v = '';
+                if (arr.length && !arr.some(isNaN)) {
+                    const total = arr.reduce((a, b) => a + b, 0);
+                    v = arr.every(x => x === arr[0]) ? `${fmtN(arr[0])}×${arr.length}=${fmtN(total)}` : `${eng ? 'Total' : 'कुल अंक'} = ${fmtN(total)}`;
+                }
+                box.value = v;
+            });
+        }
+        document.addEventListener('input', (e) => {
+            const t = e.target;
+            if (t && t.classList && t.classList.contains('section-marks-box')) { t.dataset.manual = t.value.trim() ? '1' : ''; if (!t.dataset.manual) refreshSectionBoxes(); }
+            else refreshSectionBoxes();
+        });
+        document.addEventListener('change', (e) => { if (e.target && e.target.id === 'subjectName') refreshSectionBoxes(); });
 
-      // No month title/text above the table.
-      page.appendChild(table);
-      printArea.appendChild(page);
-    });
+        function autoAddQuestionMark(element) { /* auto '?' हटा दिया गया */ debouncedAutoSave(); }
+        function removeBlock(blockId) { const block = document.getElementById(blockId); if(block) { block.classList.add('slide-up-anim'); setTimeout(() => { block.remove(); refreshSectionBoxes(); debouncedAutoSave(); }, 200); } }
 
-    if (!includedMonths) {
-      throw new Error("No checked Namaz records found in this JSON file.");
-    }
+        const trashSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>`;
 
-    document.title = profileName
-      ? "Namaz Report - " + profileName
-      : "Namaz Report";
-  }
+        function createMCQElement(question = '', op1 = '', op2 = '', op3 = '', op4 = '', marks = '1', layout = '') {
+            mcqCount++; const container = document.getElementById('mcqContainer'); const div = document.createElement('div'); div.className = 'question-block mcq-item-block'; div.id = `mcq_block_${mcqCount}`; 
+            
+            let prefs = getPrefixes([question, op1, op2, op3, op4].join(' '));
+            if(layout) { div.setAttribute('data-layout', layout); }
+            if(layout === '2x2') div.classList.add('force-2x2-grid');
+            
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">बहुविकल्पीय प्रश्न <span class="layout-badge">2x2 GRID</span></span><button class="remove-btn" onclick="removeBlock('mcq_block_${mcqCount}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="mcq-text" placeholder="प्रश्न टाइप करें..." rows="3">${question}</textarea></div><div class="options-ui-grid"><div class="option-input-wrapper"><span class="option-prefix pref-a">${prefs.a}</span><input type="text" class="mcq-op-a" value="${op1}"></div><div class="option-input-wrapper"><span class="option-prefix pref-b">${prefs.b}</span><input type="text" class="mcq-op-b" value="${op2}"></div><div class="option-input-wrapper"><span class="option-prefix pref-c">${prefs.c}</span><input type="text" class="mcq-op-c" value="${op3}"></div><div class="option-input-wrapper"><span class="option-prefix pref-d">${prefs.d}</span><input type="text" class="mcq-op-d" value="${op4}"></div></div><div class="form-group" style="width: 120px; margin-top: 15px;"><label>अंक</label><input type="text" class="mcq-marks" value="${marks}"></div>`;
+            container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
+        }
 
-  function showPreview() {
-    const home = $("homeView");
-    const preview = $("previewView");
+        function createNormalElement(containerId, labelPrefix, question = '', marks = '2') {
+            let uniqueId = Math.floor(Math.random() * 1000000); const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'question-block normal-item-block'; div.id = `normal_block_${uniqueId}`;
+            div.innerHTML = `<div class="q-header-ui"><span class="q-num-label">${labelPrefix} प्रश्न</span><button class="remove-btn" onclick="removeBlock('normal_block_${uniqueId}')">${trashSvg} हटाएं</button></div><div class="form-group"><textarea class="normal-text" placeholder="गद्यांश या प्रश्न टाइप करें (नई लाइन के लिए Enter दबाएं)..." rows="5">${question}</textarea></div><div class="form-group" style="width: 120px; margin-top: 10px;"><label>अंक</label><input type="text" class="normal-marks" value="${marks}"></div>`;
+            container.appendChild(div); refreshSectionBoxes(); debouncedAutoSave();
+        }
 
-    if (home) {
-      home.style.opacity = "0";
-      setTimeout(() => { home.style.display = "none"; }, 180);
-    }
+        function addMCQField(layout = '') { createMCQElement('', '', '', '', '', '1', layout); }
+        function addNormalField(id, label, marks) { createNormalElement(id, label, '', marks); }
+        function clearPaper() { currentPaperId = null; document.querySelectorAll('.question-block').forEach(b => b.classList.add('slide-up-anim')); setTimeout(() => { document.getElementById('mcqContainer').innerHTML = ''; document.getElementById('vshortContainer').innerHTML = ''; document.getElementById('shortContainer').innerHTML = ''; document.getElementById('longContainer').innerHTML = ''; mcqCount = 0; document.querySelectorAll('.section-marks-box').forEach(b => { b.dataset.manual = ''; }); refreshSectionBoxes(); debouncedAutoSave(); }, 250); }
 
-    if (preview) {
-      preview.style.display = "block";
-      requestAnimationFrame(() => {
-        preview.style.opacity = "1";
-        preview.scrollTop = 0;
-        window.scrollTo(0, 0);
-      });
-    }
-  }
+        function openImportModal() { document.getElementById('importModal').style.display = 'flex'; setTimeout(()=>document.getElementById('importModal').classList.add('active'),10); }
+        function closeImportModal() { document.getElementById('importModal').classList.remove('active'); setTimeout(()=> {document.getElementById('importModal').style.display = 'none'; document.getElementById('htmlImportText').value = '';}, 300); }
+        
+        function updateSavedCountBadge() { let saved = localStorage.getItem('mySavedAIPapers'); document.getElementById('savedCountBadge').innerText = saved ? JSON.parse(saved).length : 0; }
+        
+        function saveAndLoadImportedHTML() {
+            let rawHtml = document.getElementById('htmlImportText').value; if (!rawHtml.trim()) return showToast('⚠️ कृपया पहले HTML कोड बॉक्स में डालें!', 'warning');
+            rawHtml = rawHtml.replace(/```html/g, '').replace(/```/g, '');
+            try {
+                const doc = new DOMParser().parseFromString(rawHtml, 'text/html');
+                const mcqs = doc.querySelectorAll('.ai-mcq'); const vshorts = doc.querySelectorAll('.ai-vshort'); const shorts = doc.querySelectorAll('.ai-short'); const longs = doc.querySelectorAll('.ai-long');
+                currentPaperId = 'paper_' + Date.now(); 
+                let paperData = { id: currentPaperId, title: `${document.getElementById('className').value} - ${document.getElementById('subjectName').value} (AI Paper)`, date: new Date().toLocaleDateString('hi-IN'), mcqs: [], vshorts: [], shorts: [], longs: [] };
+                mcqs.forEach(el => paperData.mcqs.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-o1')?.innerText||'', el.querySelector('.ai-o2')?.innerText||'', el.querySelector('.ai-o3')?.innerText||'', el.querySelector('.ai-o4')?.innerText||'', el.querySelector('.ai-m')?.innerText||'1', '']));
+                vshorts.forEach(el => paperData.vshorts.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'2']));
+                shorts.forEach(el => paperData.shorts.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'4']));
+                longs.forEach(el => paperData.longs.push([el.querySelector('.ai-q')?.innerText||'', el.querySelector('.ai-m')?.innerText||'7']));
+                let allPapers = localStorage.getItem('mySavedAIPapers'); allPapers = allPapers ? JSON.parse(allPapers) : []; allPapers.unshift(paperData); localStorage.setItem('mySavedAIPapers', JSON.stringify(allPapers));
+                updateSavedCountBadge(); closeImportModal(); loadPaperIntoEditor(paperData); showToast('✅ AI पेपर सेव हो गया है!', 'success');
+            } catch(e) { showToast("❌ इम्पोर्ट करने में समस्या आई।", 'error'); }
+        }
 
-  function closePreview() {
-    const preview = $("previewView");
-    const home = $("homeView");
+        function loadPaperIntoEditor(paper) { clearPaper(); currentPaperId = paper.id; setTimeout(() => { paper.mcqs.forEach(q => createMCQElement(q[0], q[1], q[2], q[3], q[4], q[5], q[6])); paper.vshorts.forEach(q => createNormalElement('vshortContainer', 'अति लघु उत्तरीय', q[0], q[1])); paper.shorts.forEach(q => createNormalElement('shortContainer', 'लघु उत्तरीय', q[0], q[1])); paper.longs.forEach(q => createNormalElement('longContainer', 'दीर्घ उत्तरीय', q[0], q[1])); debouncedAutoSave(); }, 300); }
 
-    if (preview) {
-      preview.style.opacity = "0";
-      setTimeout(() => { preview.style.display = "none"; }, 180);
-    }
+        function openSavedPapersModal() { renderSavedPapersList(); document.getElementById('savedPapersModal').style.display = 'flex'; setTimeout(()=>document.getElementById('savedPapersModal').classList.add('active'),10); }
+        function closeSavedPapersModal() { document.getElementById('savedPapersModal').classList.remove('active'); setTimeout(()=>document.getElementById('savedPapersModal').style.display = 'none', 300); }
 
-    if (home) {
-      setTimeout(() => {
-        home.style.display = "block";
-        requestAnimationFrame(() => home.style.opacity = "1");
-        window.scrollTo(0, 0);
-      }, 190);
-    }
-  }
+        function renderSavedPapersList() {
+            const container = document.getElementById('savedPapersListContainer'); container.innerHTML = '';
+            let saved = localStorage.getItem('mySavedAIPapers'); let papers = saved ? JSON.parse(saved) : [];
+            if(papers.length === 0) { container.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b;">अभी तक कोई पेपर सेव नहीं किया गया है।</div>`; return; }
+            papers.forEach(paper => {
+                let totalQ = paper.mcqs.length + paper.vshorts.length + paper.shorts.length + paper.longs.length;
+                let card = document.createElement('div'); card.className = 'saved-paper-card';
+                card.innerHTML = `<div class="saved-info"><h4>📄 ${paper.title}</h4><p>तिथि: ${paper.date} | कुल प्रश्न: ${totalQ}</p></div><div class="saved-actions"><button class="btn-edit" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 10px 16px; border-radius: 10px; font-weight: 700; cursor: pointer;" onclick="editSavedPaper('${paper.id}')">✏️ लोड करें</button><button class="remove-btn" style="display:inline-flex;" onclick="deleteSavedPaper('${paper.id}')">${trashSvg} डिलीट</button></div>`;
+                container.appendChild(card);
+            });
+        }
 
-  function handlePrint() {
-    if (!$("printArea") || !$("printArea").children.length) {
-      showToast("Please upload a JSON file first.");
-      return;
-    }
-    setTimeout(() => window.print(), 80);
-  }
+        function editSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); let paper = papers.find(p => p.id === id); if(paper) { loadPaperIntoEditor(paper); closeSavedPapersModal(); } }
+        function deleteSavedPaper(id) { let papers = JSON.parse(localStorage.getItem('mySavedAIPapers')); papers = papers.filter(p => p.id !== id); localStorage.setItem('mySavedAIPapers', JSON.stringify(papers)); updateSavedCountBadge(); renderSavedPapersList(); if(currentPaperId === id) currentPaperId = null; showToast("✅ पेपर डिलीट हो गया!", "success"); }
 
-  async function generateFromFile(file) {
-    if (!file) {
-      showToast("Please select your Namaz Tracker .json file.");
-      return;
-    }
+        function getSinglePaperHTML() {
+            let schoolValue = document.getElementById('schoolName').value; const school = schoolValue === 'none' ? '' : schoolValue; 
+            let examValue = document.getElementById('examName').value; const exam = examValue === 'none' ? '' : examValue;
+            let subjectValue = document.getElementById('subjectName').value; const subject = subjectValue === 'none' ? '________' : subjectValue;
+            let classValue = document.getElementById('className').value; let selectedClass = classValue === 'none' ? '________' : classValue.replace('कक्षा ', ''); 
+            const timeValue = document.getElementById('timeAllowed').value;
+            let marksValue = document.getElementById('maxMarks').value; const marks = marksValue === 'none' ? '________' : marksValue;
+            const isEnglish = subject.toLowerCase().includes('english') || subject.includes('अंग्रेज़ी');
+            let headerHTML = `<div class="print-header">${school ? `<div class="print-school">${school}</div>` : ''}${exam ? `<div class="print-exam">${exam}</div>` : ''}<table class="print-meta-table">`;
+            if (timeValue === 'none') { headerHTML += `<tr><td style="text-align: left; width: 33%;">विषय : <span>${subject}</span></td><td style="text-align: center; width: 34%;">कक्षा : <span>${selectedClass}</span></td><td style="text-align: right; width: 33%;">पूर्णांक : <span>${marks}</span></td></tr>`; } 
+            else { headerHTML += `<tr><td style="text-align: left; width: 50%;">विषय : <span>${subject}</span></td><td style="text-align: right; width: 50%;">कक्षा : <span>${selectedClass}</span></td></tr><tr><td style="text-align: left;">समय : <span>${timeValue}</span></td><td style="text-align: right;">पूर्णांक : <span>${marks}</span></td></tr>`; }
+            headerHTML += `</table></div>`;
 
-    if (!validJsonFile(file)) {
-      showToast("Only a .json backup file is supported.");
-      return;
-    }
+            refreshSectionBoxes();
+            const marksStyle = (document.getElementById('marksStyle') || {}).value || 'each';
+            const fmtN = n => String(Math.round(n * 100) / 100);
+            const secMarks = (boxId) => {
+                if (marksStyle !== 'section') return '';
+                const box = document.getElementById(boxId); const v = box ? box.value.trim() : '';
+                return v ? ` (${v})` : '';
+            };
+            const qMarksCell = m => `<td class="print-q-marks">${marksStyle === 'each' ? '[' + m + ']' : ''}</td>`;
+            let bodyHTML = ''; let globalQNumber = 1;
+            const mcqBlocks = document.querySelectorAll('.mcq-item-block');
+            if(mcqBlocks.length > 0) {
+                bodyHTML += `<div class="print-section-heading">${isEnglish ? "SECTION A : MULTIPLE CHOICE QUESTIONS" : "बहुविकल्पीय प्रश्न"}${secMarks('secMarks_mcq')}</div>`;
+                mcqBlocks.forEach(block => {
+                    updateBlockPrefixes(block, true);
+                    let txt = block.querySelector('.mcq-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>'); 
+                    const m = block.querySelector('.mcq-marks').value.trim() || '1'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
+                    
+                    let customLayout = block.getAttribute('data-layout');
+                    let gridStyle = '';
+                    if (customLayout === '2x2') { gridStyle = 'style="grid-template-columns: repeat(2, minmax(0, 1fr)) !important;"'; } 
+                    else if (customLayout === '1x1') { gridStyle = 'style="grid-template-columns: 1fr !important;"'; }
 
-    const button = $("generateBtn");
-    const nameEl = $("selectedFileName");
+                    bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table><div class="print-options-container" ${gridStyle}><div class="print-opt-col"><strong>${block.querySelector('.pref-a').innerText}</strong> ${block.querySelector('.mcq-op-a').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-b').innerText}</strong> ${block.querySelector('.mcq-op-b').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-c').innerText}</strong> ${block.querySelector('.mcq-op-c').value.trim()}</div><div class="print-opt-col"><strong>${block.querySelector('.pref-d').innerText}</strong> ${block.querySelector('.mcq-op-d').value.trim()}</div></div></div>`;
+                    globalQNumber++;
+                });
+            }
 
-    try {
-      if (button) button.disabled = true;
-      if (nameEl) nameEl.textContent = "Reading " + file.name + "…";
+            const addSection = (selector, title, boxId) => {
+                const blocks = document.querySelectorAll(selector);
+                if(blocks.length > 0) {
+                    bodyHTML += `<div class="print-section-heading">${title}${secMarks(boxId)}</div>`;
+                    blocks.forEach(block => {
+                        let txt = block.querySelector('.normal-text').value.trim() || 'Question text...'; txt = txt.replace(/\n+/g, '<br>');
+                        const m = block.querySelector('.normal-marks').value.trim() || '0'; const qPrefix = isEnglish ? `Q.${globalQNumber}.` : `प्रश्न ${globalQNumber}.`;
+                        bodyHTML += `<div class="print-q-item"><table class="print-q-table"><tr><td class="print-q-text"><strong>${qPrefix}</strong> ${txt}</td>${qMarksCell(m)}</tr></table></div>`; globalQNumber++;
+                    });
+                }
+            };
 
-      const raw = await file.text();
-      if (!raw.trim()) throw new Error("The JSON file is empty.");
+            addSection('#vshortContainer .normal-item-block', isEnglish ? "SECTION B : VERY SHORT ANSWER" : "अति लघु उत्तरीय प्रश्न", 'secMarks_vshort');
+            addSection('#shortContainer .normal-item-block', isEnglish ? "SECTION C : SHORT ANSWER" : "लघु उत्तरीय प्रश्न", 'secMarks_short');
+            addSection('#longContainer .normal-item-block', isEnglish ? "SECTION D : LONG ANSWER" : "दीर्घ उत्तरीय प्रश्न", 'secMarks_long');
 
-      let payload;
-      try {
-        payload = JSON.parse(raw);
-      } catch (_) {
-        throw new Error("Invalid JSON. Please upload the original Namaz Tracker backup.json.");
-      }
+            if(globalQNumber === 1) return null; return `<div class="single-paper-content">${headerHTML}${bodyHTML}</div>`;
+        }
 
-      const state = getState(payload);
-      if (!state) {
-        throw new Error('This file does not contain "namazState".');
-      }
+        function verifyStartupCode() {
+            if (document.getElementById('startupVerifyCode').value.trim() === '8442') {
+                const lockScreen = document.getElementById('mainLockScreen'); lockScreen.style.opacity = '0';
+                const mainContent = document.getElementById('mainAppContent'); mainContent.style.visibility = 'visible'; mainContent.style.opacity = '1';
+                setTimeout(() => { lockScreen.style.display = 'none'; }, 500);
+            } else {
+                const errorMsg = document.getElementById('startupErrorMsg'); errorMsg.style.display = 'block'; errorMsg.classList.remove('shake-anim'); void errorMsg.offsetWidth; errorMsg.classList.add('shake-anim');
+            }
+        }
 
-      const profileName =
-        typeof payload.profileName === "string"
-          ? payload.profileName.trim()
-          : "";
+        let pendingPrintIsTwoPaper = false;
+        function openExportConfirm(isTwoPaper) { pendingPrintIsTwoPaper = isTwoPaper; document.getElementById('exportConfirmModal').style.display = 'flex'; setTimeout(() => { document.getElementById('exportConfirmModal').classList.add('active'); }, 10); }
+        function closeExportConfirm() { document.getElementById('exportConfirmModal').classList.remove('active'); setTimeout(() => { document.getElementById('exportConfirmModal').style.display = 'none'; }, 300); }
+        function proceedExport() {
+            closeExportConfirm(); autoSave(); saveCurrentPaperToVault(); 
+            if (pendingPrintIsTwoPaper) { generateAndPrintTwoPaper(); } else { generateAndPrintPaper(); }
+        }
 
-      renderPDF(state, profileName);
+        // ===================== 📝 WORD (.docx) EXPORT =====================
+        // बिना इंटरनेट के काम करता है - कोई बाहरी लाइब्रेरी नहीं चाहिए
+        const _crcTable = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; } return t; })();
+        function _crc32(buf) { let c = 0xFFFFFFFF; for (let i = 0; i < buf.length; i++) c = _crcTable[(c ^ buf[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
 
-      if (nameEl) {
-        nameEl.textContent = "✓ " + file.name + " • Ready";
-      }
+        function _buildZip(files) {
+            const enc = new TextEncoder(); const chunks = []; const central = []; let offset = 0;
+            const u16 = n => [n & 255, (n >>> 8) & 255]; const u32 = n => [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255];
+            files.forEach(f => {
+                const name = enc.encode(f.name); const data = enc.encode(f.content); const crc = _crc32(data);
+                const local = new Uint8Array([0x50,0x4B,0x03,0x04, ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(crc), ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0)]);
+                chunks.push(local, name, data);
+                central.push({ name, crc, size: data.length, offset });
+                offset += local.length + name.length + data.length;
+            });
+            let cdSize = 0;
+            central.forEach(c => {
+                const h = new Uint8Array([0x50,0x4B,0x01,0x02, ...u16(20), ...u16(20), ...u16(0x0800), ...u16(0), ...u16(0), ...u16(0x21), ...u32(c.crc), ...u32(c.size), ...u32(c.size), ...u16(c.name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(c.offset)]);
+                chunks.push(h, c.name); cdSize += h.length + c.name.length;
+            });
+            chunks.push(new Uint8Array([0x50,0x4B,0x05,0x06, ...u16(0), ...u16(0), ...u16(central.length), ...u16(central.length), ...u32(cdSize), ...u32(offset), ...u16(0)]));
+            return new Blob(chunks, { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        }
 
-      showPreview();
-    } catch (error) {
-      console.error(error);
-      if (nameEl) nameEl.textContent = "No file selected";
-      if ($("jsonFile")) $("jsonFile").value = "";
-      selectedJsonFile = null;
-      showToast(error.message || "Unable to read the JSON file.");
-    } finally {
-      if (button) button.disabled = !selectedJsonFile;
-    }
-  }
+        function _xe(s) { return String(s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-  function initUploader() {
-    const input = $("jsonFile");
-    const zone = $("fileDropZone");
-    const button = $("generateBtn");
+        function buildPaperDocx(twoUp = false, linked = false) {
+            updatePaperFormatting();
+            const html = getSinglePaperHTML(); if (!html) return null;
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const fontPx = parseFloat(document.getElementById('fontSize').value) || 14;
+            const spacing = parseFloat(document.getElementById('lineSpacing').value) || 1.5;
+            const globalLayout = document.getElementById('mcqLayoutOption').value;
+            let fontName = (document.getElementById('paperFont').value.split(',')[0] || '').replace(/['"]/g, '').trim();
+            if (!fontName || fontName === 'Inter') fontName = 'Nirmala UI';
+            const marginIn = parseFloat(document.getElementById('pageMargin')?.value) || 0.5;
+            const marginTw = Math.round(marginIn * 1440);
+            const pageW = twoUp ? 16838 : 11906, pageH = twoUp ? 11906 : 16838, textW = pageW - 2 * marginTw;
+            const gapW = 360; const colW = twoUp ? Math.floor((textW - gapW) / 2) : textW;
+            // 2x में प्रिंट वाले जैसे ही छोटे साइज़
+            const szSchool = twoUp ? fontPx + 4 : fontPx + 10, szExam = twoUp ? fontPx - 1 : fontPx + 1, szHead = twoUp ? fontPx - 2 : fontPx + 1, szQ = twoUp ? fontPx - 3 : fontPx, szOpt = twoUp ? fontPx - 3.5 : fontPx;
+            const hp = px => Math.round(px * 1.5); // px -> half-points (print जैसा ही साइज़)
+            const lineVal = Math.round(spacing * 240);
 
-    if (!input || !zone || !button) {
-      console.error("JSON uploader elements missing.");
-      return;
-    }
+            const fontXml = `<w:rFonts w:ascii="${_xe(fontName)}" w:hAnsi="${_xe(fontName)}" w:cs="${_xe(fontName)}" w:eastAsia="${_xe(fontName)}"/>`;
+            const boldAllDoc = (document.getElementById('boldAll') || {}).value === 'bold';
+            const runXml = (r, sizePx, forceBold, forceUnderline) => {
+                if (r.br) return '<w:r><w:br/></w:r>';
+                if (r.tab) return '<w:r><w:tab/></w:r>';
+                let pr = fontXml;
+                if (forceBold || r.b || boldAllDoc) pr += '<w:b/><w:bCs/>';
+                if (r.i) pr += '<w:i/><w:iCs/>';
+                if (forceUnderline || r.u) pr += '<w:u w:val="single"/>';
+                pr += `<w:sz w:val="${hp(sizePx)}"/><w:szCs w:val="${hp(sizePx)}"/>`;
+                if (r.sub) pr += '<w:vertAlign w:val="subscript"/>'; else if (r.sup) pr += '<w:vertAlign w:val="superscript"/>';
+                return `<w:r><w:rPr>${pr}</w:rPr><w:t xml:space="preserve">${_xe(r.t)}</w:t></w:r>`;
+            };
+            const collect = (node, fmt, out) => {
+                node.childNodes.forEach(ch => {
+                    if (ch.nodeType === 3) { if (ch.nodeValue) out.push({ ...fmt, t: ch.nodeValue.replace(/\s*\n\s*/g, ' ') }); }
+                    else if (ch.nodeType === 1) {
+                        const tag = ch.tagName.toLowerCase();
+                        if (tag === 'br') { out.push({ br: true }); return; }
+                        const f = { ...fmt };
+                        if (tag === 'b' || tag === 'strong') f.b = true;
+                        if (tag === 'u') f.u = true;
+                        if (tag === 'i' || tag === 'em') f.i = true;
+                        if (tag === 'sub') f.sub = true;
+                        if (tag === 'sup') f.sup = true;
+                        collect(ch, f, out);
+                    }
+                });
+                return out;
+            };
+            let linkMode = 'none', linkN = 0;
+            const para = (runs, o = {}) => {
+                const sizePx = o.sizePx || fontPx;
+                let ppr = '';
+                if (o.keepNext) ppr += '<w:keepNext/>';
+                if (o.keepLines) ppr += '<w:keepLines/>';
+                if (o.tabRight) ppr += `<w:tabs><w:tab w:val="right" w:pos="${o.tabRight}"/></w:tabs>`;
+                if (o.border) ppr += '<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="2" w:color="000000"/></w:pBdr>';
+                ppr += `<w:spacing w:before="${o.before || 0}" w:after="${o.after === undefined ? 40 : o.after}" w:line="${o.line || lineVal}" w:lineRule="auto"/>`;
+                if (o.ind) ppr += `<w:ind w:left="${o.ind}"/>`;
+                if (o.align) ppr += `<w:jc w:val="${o.align}"/>`;
+                let inner = runs.map(r => runXml(r, sizePx, o.bold, o.underline)).join('');
+                if (linkMode !== 'none' && runs.length) {
+                    const id = ++linkN, nm = 'L' + id;
+                    if (linkMode === 'orig') inner = `<w:bookmarkStart w:id="${id}" w:name="${nm}"/>${inner}<w:bookmarkEnd w:id="${id}"/>`;
+                    else inner = `<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> REF ${nm} </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r>${inner}<w:r><w:fldChar w:fldCharType="end"/></w:r>`;
+                }
+                return `<w:p><w:pPr>${ppr}</w:pPr>${inner}</w:p>`;
+            };
+            const noBorders = '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>';
+            const table = (rows, widths, indent, bottomLine) => {
+                const total = widths.reduce((a, b) => a + b, 0);
+                let x = `<w:tbl><w:tblPr><w:tblW w:w="${total}" w:type="dxa"/>${indent ? `<w:tblInd w:w="${indent}" w:type="dxa"/>` : ''}${bottomLine ? '<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="single" w:sz="12" w:space="0" w:color="000000"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>' : noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="40" w:type="dxa"/><w:right w:w="40" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${widths.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
+                rows.forEach(cells => { x += '<w:tr><w:trPr><w:cantSplit/></w:trPr>' + cells.map((c, i) => `<w:tc><w:tcPr><w:tcW w:w="${widths[i]}" w:type="dxa"/></w:tcPr>${c || '<w:p/>'}</w:tc>`).join('') + '</w:tr>'; });
+                return x + '</w:tbl>';
+            };
 
-    zone.addEventListener("click", openPicker);
+            const makeBody = () => {
+            linkN = 0; let body = '';
+            // ---- Header ----
+            const school = doc.querySelector('.print-school'); const exam = doc.querySelector('.print-exam');
+            if (school) body += para([{ t: school.textContent }], { align: 'center', bold: true, sizePx: szSchool, after: 20, line: 240 });
+            if (exam) body += para([{ t: exam.textContent }], { align: 'center', bold: true, sizePx: szExam, after: 40, line: 240 });
+            const metaRows = []; let metaWidths = [];
+            doc.querySelectorAll('.print-meta-table tr').forEach(tr => {
+                const tds = Array.from(tr.querySelectorAll('td'));
+                if (!metaWidths.length) { metaWidths = tds.length === 3 ? [Math.round(colW * 0.33), Math.round(colW * 0.34), Math.round(colW * 0.33)] : [Math.round(colW / 2), colW - Math.round(colW / 2)]; }
+                metaRows.push(tds.map(td => { const al = (td.getAttribute('style') || '').includes('right') ? 'right' : ((td.getAttribute('style') || '').includes('center') ? 'center' : 'left'); return para([{ t: td.textContent.replace(/\s+/g, ' ').trim() }], { bold: true, align: al, after: 10, line: 240, sizePx: szQ }); }));
+            });
+            if (metaRows.length) { body += table(metaRows, metaWidths, 0, true); }
 
-    zone.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openPicker();
-      }
-    });
+            // ---- Body ----
+            doc.querySelector('.single-paper-content').querySelectorAll(':scope > .print-section-heading, :scope > .print-q-item').forEach(el => {
+                if (el.classList.contains('print-section-heading')) {
+                    body += para([{ t: el.textContent }], { align: 'center', bold: true, underline: true, sizePx: szHead, before: twoUp ? 120 : 200, after: 100, keepNext: true, line: 240 });
+                    return;
+                }
+                const qCell = el.querySelector('.print-q-text'); const mCell = el.querySelector('.print-q-marks');
+                const runs = collect(qCell, {}, []);
+                if (mCell && mCell.textContent.trim()) { runs.push({ tab: true }); runs.push({ t: mCell.textContent.trim(), b: true }); }
+                const opts = el.querySelectorAll('.print-opt-col');
+                body += para(runs, { tabRight: colW, keepNext: opts.length > 0, keepLines: true, sizePx: szQ });
+                if (opts.length) {
+                    const st = (el.querySelector('.print-options-container').getAttribute('style') || '');
+                    let cols = globalLayout === '2x2' ? 2 : (globalLayout === '1x1' ? 1 : 4);
+                    if (st.includes('repeat(2')) cols = 2; else if (st.includes('1fr')) cols = 1;
+                    const indent = 375; const tw = colW - indent; const cw = Math.floor(tw / cols);
+                    const rows = []; const list = Array.from(opts);
+                    for (let i = 0; i < list.length; i += cols) {
+                        const row = list.slice(i, i + cols).map(o => para(collect(o, {}, []), { after: 20, sizePx: szOpt }));
+                        while (row.length < cols) row.push('');
+                        rows.push(row);
+                    }
+                    body += table(rows, Array(cols).fill(cw), indent, false);
+                    body += para([], { after: 20, line: 120, sizePx: 4 });
+                }
+            });
+            return body; };
+            let body;
+            if (twoUp) {
+                // बाएँ = मूल टेक्स्ट (Bookmark); दाएँ = हर लाइन का REF फ़ील्ड (लिंक्ड कॉपी)
+                linkMode = linked ? 'orig' : 'none'; const leftBody = makeBody();
+                linkMode = linked ? 'ref' : 'none'; const rightBody = makeBody();
+                linkMode = 'none';
+                const tc = (w, content, dashed) => `<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${dashed ? '<w:tcBorders><w:right w:val="dashed" w:sz="8" w:space="0" w:color="000000"/></w:tcBorders>' : ''}</w:tcPr>${content}</w:tc>`;
+                const rowH = pageH - 2 * marginTw - 500;
+                const w2 = colW * 2 + gapW;
+                body = `<w:tbl><w:tblPr><w:tblW w:w="${w2}" w:type="dxa"/>${noBorders}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${colW}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${gapW / 2}"/><w:gridCol w:w="${colW}"/></w:tblGrid><w:tr><w:trPr><w:trHeight w:val="${rowH}" w:hRule="atLeast"/></w:trPr>${tc(colW, leftBody)}${tc(gapW / 2, '<w:p/>', true)}${tc(gapW / 2, '<w:p/>')}${tc(colW, rightBody)}</w:tr></w:tbl>` + para([], { after: 0, sizePx: 2, line: 20 });
+            } else {
+                body = makeBody(); body += para([], { after: 0 });
+            }
 
-    input.addEventListener("change", event => {
-      const file = event.target.files && event.target.files[0];
-      if (!file) return;
+            const W = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
+            const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${W}><w:body>${body}<w:sectPr><w:pgSz w:w="${pageW}" w:h="${pageH}"${twoUp ? ' w:orient="landscape"' : ''}/><w:pgMar w:top="${marginTw}" w:right="${marginTw}" w:bottom="${marginTw}" w:left="${marginTw}" w:header="400" w:footer="400" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+            const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${W}><w:docDefaults><w:rPrDefault><w:rPr>${fontXml}<w:sz w:val="${hp(fontPx)}"/><w:szCs w:val="${hp(fontPx)}"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="hi-IN"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="40" w:line="${lineVal}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>`;
+            const files = [
+                { name: '[Content_Types].xml', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>' },
+                { name: '_rels/.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>' },
+                { name: 'word/_rels/document.xml.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
+                { name: 'word/document.xml', content: documentXml },
+                { name: 'word/styles.xml', content: stylesXml }
+            ];
+            return _buildZip(files);
+        }
 
-      selectedJsonFile = file;
-      $("selectedFileName").textContent = "Selected: " + file.name;
-      button.disabled = false;
-    });
+        function downloadPaperAsWord(twoUp = false, linked = false) {
+            try {
+                const blob = buildPaperDocx(twoUp, linked);
+                if (!blob) return showToast("⚠️ कृपया Word बनाने से पहले प्रश्न पत्र में सवाल जोड़ें!", "warning");
+                const clsNum = ((document.getElementById('className').value || '').match(/\d+/) || [''])[0];
+                const fname = (twoUp ? (linked ? 'Question_Paper_2x_Linked' : 'Question_Paper_2x') : 'Question_Paper') + (clsNum ? '_Class' + clsNum : '') + '_' + new Date().toISOString().slice(0, 10) + '.docx';
+                const url = URL.createObjectURL(blob); const a = document.createElement('a');
+                a.href = url; a.download = fname; document.body.appendChild(a); a.click();
+                setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 1500);
+                showToast(linked ? "✅ Linked 2x Word डाउनलोड हो रही है! बाएँ बदलाव के बाद Ctrl+A फिर F9 दबाएँ।" : "✅ Word (.docx) फ़ाइल डाउनलोड हो रही है!", "success");
+            } catch (e) { console.error(e); showToast("❌ Word फ़ाइल बनाने में समस्या आई।", "error"); }
+        }
 
-    button.addEventListener("click", () => {
-      if (selectedJsonFile) {
-        generateFromFile(selectedJsonFile);
-      } else {
-        openPicker();
-      }
-    });
+        function generateAndPrintPaper() {
+            updatePaperFormatting(); const html = getSinglePaperHTML();
+            if(!html) return showToast("⚠️ कृपया प्रिंट करने से पहले प्रश्न पत्र में सवाल जोड़ें!", "warning");
+            setPrintPageSize(false); document.getElementById('paperPreview').innerHTML = html; document.getElementById('paperPreview').classList.remove('two-paper-layout'); window.print();
+        }
 
-    ["dragenter", "dragover"].forEach(type => {
-      zone.addEventListener(type, event => {
-        event.preventDefault();
-        zone.classList.add("dragover");
-      });
-    });
+        function generateAndPrintTwoPaper() {
+            updatePaperFormatting(); const html = getSinglePaperHTML();
+            if(!html) return showToast("⚠️ कृपया प्रिंट करने से पहले प्रश्न पत्र में सवाल जोड़ें!", "warning");
+            setPrintPageSize(true); document.getElementById('paperPreview').innerHTML = `<div class="two-paper-wrapper two-paper-layout"><div class="paper-half left-half">${html}</div><div class="paper-divider"></div><div class="paper-half right-half">${html}</div></div>`; window.print();
+        }
 
-    ["dragleave", "drop"].forEach(type => {
-      zone.addEventListener(type, event => {
-        event.preventDefault();
-        zone.classList.remove("dragover");
-      });
-    });
+        window.onload = function() {
+            // 🌟 3 Seconds Splash Screen 
+            setTimeout(() => { 
+                const splash = document.getElementById("videoSplash"); 
+                splash.classList.add("splash-exit"); 
+                setTimeout(() => { 
+                    splash.style.display = "none"; 
+                    document.getElementById('startupVerifyCode').focus(); 
+                }, 500); 
+            }, 3000); 
 
-    zone.addEventListener("drop", event => {
-      const file = event.dataTransfer &&
-                   event.dataTransfer.files &&
-                   event.dataTransfer.files[0];
-
-      if (!file) return;
-
-      if (!validJsonFile(file)) {
-        showToast("Please drop a .json backup file.");
-        return;
-      }
-
-      selectedJsonFile = file;
-      $("selectedFileName").textContent = "Selected: " + file.name;
-      button.disabled = false;
-
-      // Dropped files generate immediately.
-      generateFromFile(file);
-    });
-  }
-
-  window.closePreview = closePreview;
-  window.handlePrint = handlePrint;
-
-  window.addEventListener("load", () => {
-    const splash = $("splashScreen");
-    const home = $("homeView");
-
-    initUploader();
-
-    setTimeout(() => {
-      if (splash) splash.style.opacity = "0";
-      if (home) {
-        home.style.display = "block";
-        requestAnimationFrame(() => home.style.opacity = "1");
-      }
-
-      setTimeout(() => {
-        if (splash) splash.style.display = "none";
-      }, 500);
-    }, 900);
-  });
-})();
-</script>
+            if (!loadAutoSave()) { addMCQField(); } 
+            setupFullScreenSelects(); updateSavedCountBadge(); updatePaperFormatting();
+        };
+    </script>
 </body>
 </html>
