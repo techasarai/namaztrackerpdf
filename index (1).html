@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0f0f">
+<title>Tube India</title>
+<style>
+:root{color-scheme:dark;--bg:#0f0f0f;--card:#212121;--mu:#aaa;--red:#f03;--ease:cubic-bezier(.22,.8,.2,1)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:#fff;font-family:system-ui,-apple-system,Roboto,sans-serif}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+#top{position:sticky;top:0;z-index:20;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 8px}
+.row{display:flex;align-items:center;gap:8px}
+.logo{display:flex;align-items:center;gap:6px;font-weight:800;font-size:19px;letter-spacing:-.5px}
+.logo i{background:var(--red);border-radius:7px;width:30px;height:21px;position:relative}
+.logo i:after{content:"";position:absolute;left:12px;top:5px;border-left:8px solid #fff;border-top:5.5px solid transparent;border-bottom:5.5px solid transparent}
+input{flex:1;min-width:0;background:var(--card);border:0;color:#fff;border-radius:22px;padding:10px 16px;font-size:15px;outline:none}
+.ib{background:var(--card);border:0;color:#fff;border-radius:50%;width:40px;height:40px;font-size:17px;flex:none;cursor:pointer}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{background:var(--card);border:0;color:#fff;border-radius:9px;padding:7px 13px;font-size:13.5px;white-space:nowrap;cursor:pointer;transition:background .2s,color .2s}
+.chip.on{background:#fff;color:#000}
+#grid,#grid2{display:grid;grid-template-columns:1fr;gap:18px}
+#grid{padding:8px 0 30px}
+@media(min-width:600px){#grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:8px 12px 30px}}
+.card{cursor:pointer;animation:up .5s var(--ease) both}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card:active .th{transform:scale(.98)}
+.th{aspect-ratio:16/9;background:linear-gradient(135deg,#2b2b2b,#141414);position:relative;overflow:hidden;transition:transform .15s}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.meta{padding:10px 12px 0;display:flex;gap:10px}
+.av{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700}
+.t{font-size:14.5px;line-height:1.3;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.s{font-size:12.5px;color:var(--mu);margin-top:3px}
+.sk{aspect-ratio:16/9;background:linear-gradient(90deg,#1a1a1a,#262626,#1a1a1a);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+#msg{grid-column:1/-1;padding:24px 20px;text-align:center;color:var(--mu);font-size:14px;line-height:1.6;display:flex;flex-direction:column;gap:10px;align-items:center}
+#msg .row{width:100%;max-width:380px}
+#msg button.b{background:var(--red);color:#fff;border:0;border-radius:22px;padding:10px 18px;font-size:14px;font-weight:600}
+#pl{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;visibility:hidden;transform:translateY(100%);transition:transform .4s var(--ease),visibility 0s .4s}
+#pl.on{visibility:visible;transform:none;transition:transform .4s var(--ease)}
+#sp{flex:none;width:100%;height:calc(56.25vw + env(safe-area-inset-top,0px))}
+#bk{position:fixed;inset:0;z-index:50;background:#000;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
+#bk.on{opacity:1}
+
+/* player wrapper */
+#stwrap{position:fixed;z-index:55;left:0;top:env(safe-area-inset-top,0px);width:100vw;height:56.25vw;background:#000;transition:top .5s var(--ease),width .5s var(--ease),height .5s var(--ease),transform .5s var(--ease);transform-origin:top left}
+#stwrap.rot{top:0;width:100vh;width:100dvh;height:100vw;transform:translateX(100vw) rotate(90deg)}
+#st{width:100%;height:100%;position:relative}
+#st iframe{width:100%;height:100%;border:0;display:block}
+
+/* floating overlay buttons on player */
+.pbtn{position:absolute;z-index:60;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:50%;width:40px;height:40px;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,transform .2s}
+.pbtn:active{transform:scale(.9)}
+#backBtn{top:10px;left:10px}
+#rotBtn{top:10px;right:10px}
+#rotBtn span{display:inline-block;transition:transform .5s var(--ease)}
+#rotBtn.on span{transform:rotate(90deg)}
+
+#pt{padding:12px;font-size:16px;font-weight:600;line-height:1.3}
+.ctl{display:flex;gap:8px;padding:0 12px 12px;overflow-x:auto}
+.ctl button{background:var(--card);border:0;color:#fff;border-radius:22px;padding:10px 16px;font-size:14px;white-space:nowrap;cursor:pointer}
+#rx{position:fixed;z-index:70;top:12px;left:12px;background:#000a;color:#fff;border:0;border-radius:20px;padding:8px 14px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .3s .3s}
+#rx.on{opacity:1;pointer-events:auto}
+#up{flex:1;overflow-y:auto;border-top:1px solid #222;padding-top:12px}
+</style>
+</head>
+<body>
+<div id="top">
+  <div class="row">
+    <div class="logo"><i></i>Tube</div>
+    <input id="q" placeholder="Search ya link paste karo">
+    <button class="ib" id="go">🔍</button>
+  </div>
+  <div class="chips" id="chips"></div>
+</div>
+<div id="grid"></div>
+
+<div id="pl">
+  <div id="sp"></div>
+  <div id="pt"></div>
+  <div class="ctl">
+    <button id="fs">⛶ Fullscreen</button>
+    <button id="ad">🛡 Ad-light ON</button>
+    <button id="cl">✕ Band</button>
+  </div>
+  <div id="up"><div id="grid2"></div></div>
+</div>
+<div id="bk"></div>
+
+<!-- player wrapper with overlay buttons -->
+<div id="stwrap" style="display:none">
+  <div id="st"></div>
+  <button class="pbtn" id="backBtn" title="Back">←</button>
+  <button class="pbtn" id="rotBtn" title="Rotate"><span>⟳</span></button>
+</div>
+
+<button id="rx">✕</button>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var cats=[["Trending India","",0],["Music","music",10],["Gaming","gaming",20],["Movies","movies",24]],cat=0,adl=true,cur=null,feed=[],lastQ="";
+var cols=["#e53935","#8e24aa","#1e88e5","#00897b","#fb8c00","#6d4c41"];
+var INV=["https://yewtu.be","https://inv.nadeko.net","https://invidious.nerdvpn.de","https://invidious.privacyredirect.com","https://iv.melmac.space"];
+var PIPED=["https://pipedapi.kavin.rocks","https://pipedapi.adminforge.de","https://api.piped.private.coffee"];
+var KEY="";try{KEY=localStorage.getItem('tp_key')||''}catch(e){}
+function jf(u){var c=new AbortController(),t=setTimeout(function(){c.abort()},6000);
+  return fetch(u,{signal:c.signal}).then(function(r){clearTimeout(t);if(!r.ok)throw 0;return r.json()})}
+function first(urls){var i=0;function n(){if(i>=urls.length)return Promise.reject();var x=urls[i++];
+  return jf(x[0]).then(x[1]).then(function(r){if(!r||!r.length)throw 0;return r}).catch(n)}return n()}
+function mInv(d){return(d||[]).filter(function(x){return x.videoId}).map(function(x){return{id:x.videoId,title:x.title,ch:x.author}})}
+function mPip(d){d=d.items||d;return(d||[]).map(function(x){return{id:((x.url||'').match(/v=([\w-]{11})/)||[])[1],title:x.title,ch:x.uploaderName}}).filter(function(x){return x.id})}
+function mApi(d){return(d.items||[]).map(function(x){return{id:typeof x.id==='string'?x.id:x.id.videoId,title:x.snippet.title,ch:x.snippet.channelTitle}}).filter(function(x){return x.id})}
+function load(q){
+  lastQ=q||'';showSk();var c=cats[cat],p;
+  if(KEY){
+    var u=q?'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&regionCode=IN&q='+encodeURIComponent(q)+'&key='+KEY
+      :'https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=IN&maxResults=25'+(c[2]?'&videoCategoryId='+c[2]:'')+'&key='+KEY;
+    p=jf(u).then(mApi);
+  }else{
+    var L=[];
+    if(q){INV.forEach(function(h){L.push([h+'/api/v1/search?q='+encodeURIComponent(q)+'&region=IN',mInv])});PIPED.forEach(function(h){L.push([h+'/search?q='+encodeURIComponent(q)+'&filter=videos',mPip])})}
+    else{INV.forEach(function(h){L.push([h+'/api/v1/trending?region=IN'+(c[1]?'&type='+c[1]:''),mInv])});if(!c[1])PIPED.forEach(function(h){L.push([h+'/trending?region=IN',mPip])})}
+    p=first(L);
+  }
+  p.then(function(r){if(!r.length)throw 0;feed=r;draw()}).catch(fail)
+}
+function showSk(){var g=$('grid');g.innerHTML='';for(var i=0;i<4;i++){var s=document.createElement('div');s.className='sk';g.appendChild(s)}}
+function fail(){
+  var g=$('grid');g.innerHTML='<div id="msg"><div>Videos load nahi ho paayi. Free public servers kaam nahi kar rahe, ya ye page internet se bahar ki requests block karta hai.<br>Pakka hal: apni free YouTube API key yahan daalo (ek baar), phir India feed aur search dono chalenge. Ya <b>index.html file download</b> karke browser mein kholo.</div><div class="row"><input id="k" placeholder="YouTube API key"><button class="b" id="ks">Save</button></div><button class="b" id="rt">Dobara try</button></div>';
+  $('ks').onclick=function(){KEY=$('k').value.trim();try{localStorage.setItem('tp_key',KEY)}catch(e){}load(lastQ)};
+  $('rt').onclick=function(){load(lastQ)}
+}
+function card(v,i){
+  var d=document.createElement('div');d.className='card';d.style.animationDelay=Math.min(i,8)*50+'ms';
+  d.innerHTML='<div class="th"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg" onerror="this.remove()"></div><div class="meta"><div class="av" style="background:'+cols[i%6]+'"></div><div><div class="t"></div><div class="s"></div></div></div>';
+  d.querySelector('.av').textContent=(v.ch||'?')[0];d.querySelector('.t').textContent=v.title;d.querySelector('.s').textContent=v.ch||'';
+  d.onclick=function(){play(v)};return d}
+function fill(el,l){el.innerHTML='';l.forEach(function(v,i){el.appendChild(card(v,i))})}
+function draw(){fill($('grid'),feed)}
+cats.forEach(function(c,i){var b=document.createElement('button');b.className='chip'+(i?'':' on');b.textContent=c[0];
+  b.onclick=function(){cat=i;$('q').value='';[].forEach.call($('chips').children,function(x,j){x.className='chip'+(j===i?' on':'')});load()};$('chips').appendChild(b)});
+function src(id){return'https://'+(adl?'www.youtube-nocookie.com':'www.youtube.com')+'/embed/'+id+'?autoplay=1&playsinline=1&modestbranding=1&rel=0'}
+function play(v){
+  cur=v;$('pl').className='on';$('pt').textContent=v.title||'';
+  var w=$('stwrap');w.style.display='block';$('st').innerHTML='';
+  var f=document.createElement('iframe');f.src=src(v.id);f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;$('st').appendChild(f);
+  fill($('grid2'),feed.filter(function(x){return x.id!==v.id}));
+}
+function rot(on){var w=$('stwrap');if(on===undefined)on=!w.classList.contains('rot');w.classList.toggle('rot',on);$('bk').classList.toggle('on',on);$('rx').classList.toggle('on',on);$('rotBtn').classList.toggle('on',on)}
+function pid(s){var m=s.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/)||s.match(/^([\w-]{11})$/);return m&&m[1]}
+function go(){var s=$('q').value.trim();if(!s)return;var id=pid(s);if(id&&(/youtu/.test(s)||/^[\w-]{11}$/.test(s)&&s.indexOf(' ')<0&&/[A-Z0-9_-]/.test(s)&&s.length===11&&!/^[a-z]+$/.test(s)))play({id:id,title:''});else load(s)}
+$('go').onclick=go;$('q').onkeydown=function(e){if(e.key==='Enter')go()};
+
+/* close player (back) */
+function closePlayer(){rot(false);$('pl').className='';setTimeout(function(){$('stwrap').style.display='none';$('st').innerHTML=''},400)}
+$('backBtn').onclick=closePlayer;
+$('cl').onclick=closePlayer;
+$('rx').onclick=function(){rot(false)};
+$('rotBtn').onclick=function(){rot()};
+$('fs').onclick=function(){var f=$('st').firstChild;try{(f.requestFullscreen||f.webkitRequestFullscreen).call(f)}catch(e){rot(true)}};
+$('ad').onclick=function(){adl=!adl;this.textContent='🛡 Ad-light '+(adl?'ON':'OFF');if(cur)play(cur)};
+load();
+</script>
+</body>
+</html>
