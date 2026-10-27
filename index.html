@@ -43,14 +43,24 @@ input{flex:1;min-width:0;background:var(--card);border:0;color:#fff;border-radiu
 #sp{flex:none;width:100%;height:calc(56.25vw + env(safe-area-inset-top,0px))}
 #bk{position:fixed;inset:0;z-index:50;background:#000;opacity:0;pointer-events:none;transition:opacity .45s var(--ease)}
 #bk.on{opacity:1}
-#st{position:fixed;z-index:55;left:0;top:env(safe-area-inset-top,0px);width:100vw;height:56.25vw;background:#000;transform-origin:top left;transform:translateX(0) rotate(0);transition:top .5s var(--ease),width .5s var(--ease),height .5s var(--ease),transform .5s var(--ease)}
+
+/* player wrapper */
+#stwrap{position:fixed;z-index:55;left:0;top:env(safe-area-inset-top,0px);width:100vw;height:56.25vw;background:#000;transition:top .5s var(--ease),width .5s var(--ease),height .5s var(--ease),transform .5s var(--ease);transform-origin:top left}
+#stwrap.rot{top:0;width:100vh;width:100dvh;height:100vw;transform:translateX(100vw) rotate(90deg)}
+#st{width:100%;height:100%;position:relative}
 #st iframe{width:100%;height:100%;border:0;display:block}
-#st.rot{top:0;width:100vh;width:100dvh;height:100vw;transform:translateX(100vw) rotate(90deg)}
+
+/* floating overlay buttons on player */
+.pbtn{position:absolute;z-index:60;background:rgba(0,0,0,.55);color:#fff;border:0;border-radius:50%;width:40px;height:40px;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s,transform .2s}
+.pbtn:active{transform:scale(.9)}
+#backBtn{top:10px;left:10px}
+#rotBtn{top:10px;right:10px}
+#rotBtn span{display:inline-block;transition:transform .5s var(--ease)}
+#rotBtn.on span{transform:rotate(90deg)}
+
 #pt{padding:12px;font-size:16px;font-weight:600;line-height:1.3}
 .ctl{display:flex;gap:8px;padding:0 12px 12px;overflow-x:auto}
 .ctl button{background:var(--card);border:0;color:#fff;border-radius:22px;padding:10px 16px;font-size:14px;white-space:nowrap;cursor:pointer}
-#rb span{display:inline-block;transition:transform .5s var(--ease)}
-#rb.on span{transform:rotate(90deg)}
 #rx{position:fixed;z-index:70;top:12px;left:12px;background:#000a;color:#fff;border:0;border-radius:20px;padding:8px 14px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .3s .3s}
 #rx.on{opacity:1;pointer-events:auto}
 #up{flex:1;overflow-y:auto;border-top:1px solid #222;padding-top:12px}
@@ -71,7 +81,6 @@ input{flex:1;min-width:0;background:var(--card);border:0;color:#fff;border-radiu
   <div id="sp"></div>
   <div id="pt"></div>
   <div class="ctl">
-    <button id="rb"><span>⟳</span> Rotate</button>
     <button id="fs">⛶ Fullscreen</button>
     <button id="ad">🛡 Ad-light ON</button>
     <button id="cl">✕ Band</button>
@@ -79,7 +88,14 @@ input{flex:1;min-width:0;background:var(--card);border:0;color:#fff;border-radiu
   <div id="up"><div id="grid2"></div></div>
 </div>
 <div id="bk"></div>
-<div id="st" style="display:none"></div>
+
+<!-- player wrapper with overlay buttons -->
+<div id="stwrap" style="display:none">
+  <div id="st"></div>
+  <button class="pbtn" id="backBtn" title="Back">←</button>
+  <button class="pbtn" id="rotBtn" title="Rotate"><span>⟳</span></button>
+</div>
+
 <button id="rx">✕</button>
 
 <script>
@@ -128,18 +144,23 @@ cats.forEach(function(c,i){var b=document.createElement('button');b.className='c
 function src(id){return'https://'+(adl?'www.youtube-nocookie.com':'www.youtube.com')+'/embed/'+id+'?autoplay=1&playsinline=1&modestbranding=1&rel=0'}
 function play(v){
   cur=v;$('pl').className='on';$('pt').textContent=v.title||'';
-  var s=$('st');s.style.display='block';s.innerHTML='';
-  var f=document.createElement('iframe');f.src=src(v.id);f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;s.appendChild(f);
+  var w=$('stwrap');w.style.display='block';$('st').innerHTML='';
+  var f=document.createElement('iframe');f.src=src(v.id);f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;$('st').appendChild(f);
   fill($('grid2'),feed.filter(function(x){return x.id!==v.id}));
 }
-function rot(on){var s=$('st');if(on===undefined)on=!s.classList.contains('rot');s.classList.toggle('rot',on);$('bk').classList.toggle('on',on);$('rx').classList.toggle('on',on);$('rb').classList.toggle('on',on)}
+function rot(on){var w=$('stwrap');if(on===undefined)on=!w.classList.contains('rot');w.classList.toggle('rot',on);$('bk').classList.toggle('on',on);$('rx').classList.toggle('on',on);$('rotBtn').classList.toggle('on',on)}
 function pid(s){var m=s.match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([\w-]{11})/)||s.match(/^([\w-]{11})$/);return m&&m[1]}
 function go(){var s=$('q').value.trim();if(!s)return;var id=pid(s);if(id&&(/youtu/.test(s)||/^[\w-]{11}$/.test(s)&&s.indexOf(' ')<0&&/[A-Z0-9_-]/.test(s)&&s.length===11&&!/^[a-z]+$/.test(s)))play({id:id,title:''});else load(s)}
 $('go').onclick=go;$('q').onkeydown=function(e){if(e.key==='Enter')go()};
-$('rb').onclick=function(){rot()};$('rx').onclick=function(){rot(false)};
+
+/* close player (back) */
+function closePlayer(){rot(false);$('pl').className='';setTimeout(function(){$('stwrap').style.display='none';$('st').innerHTML=''},400)}
+$('backBtn').onclick=closePlayer;
+$('cl').onclick=closePlayer;
+$('rx').onclick=function(){rot(false)};
+$('rotBtn').onclick=function(){rot()};
 $('fs').onclick=function(){var f=$('st').firstChild;try{(f.requestFullscreen||f.webkitRequestFullscreen).call(f)}catch(e){rot(true)}};
 $('ad').onclick=function(){adl=!adl;this.textContent='🛡 Ad-light '+(adl?'ON':'OFF');if(cur)play(cur)};
-$('cl').onclick=function(){rot(false);$('pl').className='';setTimeout(function(){$('st').style.display='none';$('st').innerHTML=''},400)};
 load();
 </script>
 </body>
