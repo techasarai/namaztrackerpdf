@@ -747,7 +747,7 @@ let AU=null,TW=0;
 function toast(m){document.querySelectorAll(".toast").forEach(x=>x.remove());const e=document.createElement("div");e.className="toast";e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
 function chunks(P){const o=[];P.forEach(p=>{const ss=p.t.match(/[^।.?!,;:]+[।.?!,;:]*/g)||[p.t];let b="";ss.forEach(s=>{if((b+s).length>150&&b){o.push({l:p.l,t:b.trim()});b=""}b+=s});if(b.trim())o.push({l:p.l,t:b.trim()})});return o}
 /* ⚠️ API keys — सिर्फ testing के लिए यहाँ हैं; app public करने से पहले इन्हें बदल दें */
-const GN_KEY="vach_1ytE2CY5X2DiNvPN4FZ3viqK9vGUDkOqyaPLnRSapXQ4AAXMYlyuK4pqvzNl0EsTNRxLmrzdVVFJgP7OnxtdUrO8wPEjv9tt_81bc39e5b35ad474aa97e2ed412027bf",VC=new Map();
+const GN_KEY="vach_1ytE2CY5X2DiNvPN4FZ3viqK9vGUDkOqyaPLnRSapXQ4AAXMYlyuK4pqvzNkoyEuN0ZXe8h2tefilbTZYcY5vePrfRGQdwqE_5beca35b2550597dcd28b0c74739d85f",VC=new Map();
 /* Voice characters (Gnani) */
 const VCH={
 gnani:[
